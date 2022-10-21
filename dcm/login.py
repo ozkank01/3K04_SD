@@ -1,5 +1,5 @@
 from tkinter import ttk
-import tkinter
+import tkinter as tk
 from functools import partial
 
 #utility function to HIDE widgets
@@ -29,12 +29,12 @@ def validatePassword(password1,password2):
 def passEnter():
     #enter password
     passLabel1 = ttk.Label(welcome, text="Password:").grid(row=4,column=0)
-    password1 = tkinter.StringVar()
+    password1 = tk.StringVar()
     passEntry1 = ttk.Entry(welcome, textvariable=password1,show="*").grid(row=4,column=1)
 
     #verify password
     passLabel2 = ttk.Label(welcome, text="Verify Password:").grid(row=5,column=0)
-    password2 = tkinter.StringVar()
+    password2 = tk.StringVar()
     passEntry2 = ttk.Entry(welcome, textvariable=password2,show="*").grid(row=5,column=1)
 
     validate = partial(validatePassword,password1,password2)
@@ -52,12 +52,12 @@ def loginUser():
 
     #enter username
     userLabel = ttk.Label(welcome, text="Username:").grid(row=3,column=0)
-    user = tkinter.StringVar()
+    user = tk.StringVar()
     userEntry = ttk.Entry(welcome, textvariable=user).grid(row=3,column=1)
 
     #enter password
     passLabel = ttk.Label(welcome, text="Password:").grid(row=4,column=0)
-    password = tkinter.StringVar()
+    password = tk.StringVar()
     passEntry = ttk.Entry(welcome, textvariable=password,show="*").grid(row=4,column=1)
 
     validate = partial(validateLogin, user, password)
@@ -69,7 +69,7 @@ def registerUser():
 
     #enter username
     userLabel = ttk.Label(welcome, text="Username:").grid(row=3,column=0)
-    user = tkinter.StringVar()
+    user = tk.StringVar()
     userEntry = ttk.Entry(welcome, textvariable=user).grid(row=3,column=1)
 
     #check if username has been taken
@@ -79,9 +79,11 @@ def registerUser():
     #to simplify this, make validateUsername return False if the username is already in database
 
 #base window - customize appearance!
-welcome = tkinter.Tk()
+welcome = tk.Tk()
+welcome.tk.call('lappend', 'auto_path', 'awthemes-10.4.0')
+welcome.tk.call('package', 'require', 'awdark')
 style = ttk.Style()
-style.configure('.', padding=6,background='white',font=('Calibri',12))
+style.theme_use('awdark')
 welcome.geometry("400x150")
 welcome.title("Welcome to Pacemaker Manager!")
 
