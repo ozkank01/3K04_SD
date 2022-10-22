@@ -80,15 +80,19 @@ def registerUser():
 
 #base window - customize appearance!
 welcome = tk.Tk()
-welcome.tk.call('lappend', 'auto_path', 'awthemes-10.4.0')
-welcome.tk.call('package', 'require', 'awdark')
 style = ttk.Style()
-style.theme_use('awdark')
-welcome.geometry("400x150")
+welcome.tk.call("source", "theme/forest-light.tcl")
+style.theme_use("forest-light")
+# welcome.tk.call('lappend', 'auto_path', 'awthemes-10.4.0')
+# welcome.tk.call('package', 'require', 'awdark')
+# style = ttk.Style()
+# style.theme_use('awdark')
+
+welcome.geometry("700x700")
 welcome.title("Welcome to Pacemaker Manager!")
 
 welcomeLabel = ttk.Label(welcome,text="Welcome to Pacemaker Manager!").grid(row=0,column=0,columnspan=2,pady=5)
-login = ttk.Button(welcome, text="Existing User",command=loginUser).grid(row=1,column=0)
-register = ttk.Button(welcome, text="New User",command=registerUser).grid(row=1,column=1)
+login = ttk.Button(welcome, text="Existing User",style='Accent.TButton' ,command=loginUser).grid(row=1,column=0)
+register = ttk.Button(welcome, text="New User",style='Accent.TButton',command=registerUser).grid(row=1,column=1)
 
 welcome.mainloop()
