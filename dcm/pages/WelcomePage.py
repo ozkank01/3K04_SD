@@ -13,7 +13,7 @@ class WelcomePage(tk.Frame):
             self, 
             text="Existing User",
             style='Accent.TButton' ,
-            command=lambda:controller.movePage("LoginPage")
+            command=lambda:controller.moveToPage("LoginPage")
             ).grid(row=1,column=0)
 
         #goes to register page
@@ -21,7 +21,7 @@ class WelcomePage(tk.Frame):
             self,
             text="New User",
             style='Accent.TButton',
-            command=lambda: controller.movePage("RegisterPage")
+            command=lambda: controller.moveToPage("RegisterPage")
             ).grid(row=1,column=1)
 
         self.grid()

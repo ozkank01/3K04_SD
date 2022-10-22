@@ -26,7 +26,7 @@ class DcmController:
 
         #Updates current page
         self.currPage = tk.Frame()
-        self.movePage(pageName="WelcomePage")
+        self.moveToPage(pageName="WelcomePage")
 
 
 
@@ -40,7 +40,7 @@ class DcmController:
         return pageRef
 
     #moves to given page
-    def movePage(self,pageName):
+    def moveToPage(self,pageName):
         prevPage = self.currPage
         prevPageName = prevPage.__class__.__name__
 
@@ -48,16 +48,22 @@ class DcmController:
         if pageName in self.activePages:
             self.currPage = self.activePages[pageName]
             self.currPage.tkraise()
+
         else:
             #otherwise creates an instance of page
             self.currPage =self.createPage(pageName=pageName)
             self.activePages[pageName] = self.currPage
             self.currPage.tkraise()
         
+
         #deletes page if it doesn't need to retain a previous state
         if prevPageName in ("WelcomePage","LoginPage","RegisterPage"):
             self.activePages.pop(prevPageName,None)
             prevPage.destroy()
+
+        #Otherwise it hides the widgets
+        else:
+            prevPage.grid_remove()
 
 
     #login page logic
