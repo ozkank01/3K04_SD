@@ -5,6 +5,9 @@ from tkinter import ttk
 from pages.LoginPage import LoginPage
 from pages.WelcomePage import WelcomePage
 from pages.RegisterPage import RegisterPage
+from pages.HomePage import HomePage
+from pages.ReportsPage import ReportsPage
+from pages.ParamsPage import ParamsPage
 
 
 class DcmController:
@@ -22,7 +25,7 @@ class DcmController:
         self.activePages = {}
 
         #possible pages
-        self.possPages =  {"WelcomePage":WelcomePage,"LoginPage":LoginPage,"RegisterPage":RegisterPage}
+        self.possPages =  {"WelcomePage":WelcomePage,"LoginPage":LoginPage,"RegisterPage":RegisterPage,"HomePage":HomePage,"ReportsPage":ReportsPage,"ParamsPage":ParamsPage}
 
         #Updates current page
         self.currPage = tk.Frame()
