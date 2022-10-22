@@ -1,9 +1,7 @@
 from . import Patient
 class User:
-    name = ""
     username = ""
     password = ""
-    patientList = []
     
     lRLimit =0
     uRLimit =0
@@ -18,10 +16,12 @@ class User:
     paceId =""
 
 
-    def __init__(self,name, username, password):
-        self.name  =name
+    def __init__(self, username, password):
         self.username = username
         self.password = password
+
+    def validate(self, password1):
+        return (self.password == password1)
 
 
 

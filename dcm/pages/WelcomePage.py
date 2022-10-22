@@ -21,7 +21,7 @@ class WelcomePage(tk.Frame):
             self,
             text="New User",
             style='Accent.TButton',
-            command=lambda: controller.moveToPage("RegisterPage")
+            command=lambda:controller.moveToPage("RegisterPage")
             ).grid(row=1,column=1)
 
         self.grid()
