@@ -10,7 +10,7 @@ class ParamsPage(tk.Frame):
             text="View and Modify Parameters"
             ).grid(row=0,column=0,columnspan=2,pady=5)
 
-        mode = StringVar(self)
+        mode = tk.StringVar(self)
         mode.set("AOO")
         
         pacingModes = ttk.OptionMenu(
