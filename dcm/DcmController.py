@@ -1,5 +1,4 @@
 
-from shutil import move
 import tkinter as tk
 from tkinter import ttk
 
