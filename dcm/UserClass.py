@@ -3,10 +3,10 @@ class User:
     username = ""
     password = ""
     
-    lRLimit =0
-    uRLimit =0
-    artAmp =0
-    artPulseW = 0
+    lowRLimit =0
+    uppRLimit =0
+    atrAmp =0
+    atrPulseW = 0
     ventAmp =0
     ventPulseW =0
     vRP =0
