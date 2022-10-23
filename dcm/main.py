@@ -1,4 +1,5 @@
 
+from logging import root
 from pickle import FALSE
 import tkinter as tk
 from tkinter import ttk
@@ -23,6 +24,8 @@ class DcmController:
         self.currUser = None
         self.dataManager = DataManager()
 
+        self.container = tk.Frame(self.root)
+        self.container.grid()
         #theme
         style = ttk.Style()
         self.root.tk.call("source", "theme/forest-light.tcl")
@@ -46,7 +49,7 @@ class DcmController:
 
     #creates an instance of a given page name
     def createPage(self,pageName):
-        pageRef = self.possPages[pageName](parent=self.root, controller=self)
+        pageRef = self.possPages[pageName](parent=self.container, controller=self)
         return pageRef
 
     #moves to given page
@@ -120,10 +123,9 @@ class DcmController:
         return self.currUser[key]
     
     #changes data for user
-    def changeParas(self,keys, vals):
-        for k,v in zip(keys,vals):
-            self.currUser[k] = v
-        self.dataManager.changeVals()
+    def changePara(self,key, value):
+        self.currUser[key] = val
+        self.dataManager.changeVal(key = key, value = value,username = self.currUser['username'] )
 
    
 

@@ -32,4 +32,6 @@ class RegisterPage(tk.Frame):
 
         # def userButton(self,username,password,passCheck):
         #     flag =controller.regUser(username=username,password = password, passCheck = passCheck)
-     
+        #     errLabel = ttk.Label(self,)
+        #     if flag ==-1:
+                

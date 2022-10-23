@@ -29,19 +29,15 @@ class DataManager():
             cur.execute("INSERT INTO user_data values (?,?,?,?,?,?,?,?,?,?,?,?)",(username ,password ,lowRlimit ,uppRLimit , atrAmp ,aPulseW , ventAmp ,ventPulseW ,vRP ,aRP,paceMode,pacemakerId ))
     
     #Changes a tuple of values with respect to a tuple of keys 
-    def changeVals(self,keys,values,username):
+    def changeVal(self,key,value,username):
         try:
-            if not(set(keys).issubset(self.headers)):
-                raise Exception("Invalid keys")
-            elif len(set(keys)) != len(keys):
-                raise Exception("Repeating keys")
-            elif len(keys) != len(values):
-                raise Exception("Mismatch between number of keys and number values")
+            if not (key in self.headers):
+                raise Exception("Invalid key")
             
             with sql.connect("user.db") as con:
                 cur = con.cursor()
-                temp = "("+"?,"*(len(keys)-1)+"?"+")"
-                cur.execute("UPDATE user_data SET ("+",".join(keys) + ") = " + temp,values)
+                
+                cur.execute("UPDATE user_data SET "+ key +" =  ? WHERE username = ?",(value,username))
         except Exception as e:
             print(e)
             return
