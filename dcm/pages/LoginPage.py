@@ -22,8 +22,7 @@ class LoginPage(tk.Frame):
         passEntry.grid(row=4,column=1)
        
         
-        
-
-        #validate = partial(validateLogin, user, password)
         loginButton = ttk.Button(self, text="Login", command= lambda: controller.login(username =userEntry.get(),password = passEntry.get() )).grid(row=5,column=0,columnspan=2)
         self.grid()
+
+        

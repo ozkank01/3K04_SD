@@ -87,10 +87,11 @@ class DataManager():
             result, = cur.fetchone()
             
             return result
-            
-    def removeUser(self):
-        pass
 
+    def removeUser(self,username):
+        with sql.connect("user.db") as con:
+            cur = con.cursor()
+            cur.excute("DELETE ")
 
 
 

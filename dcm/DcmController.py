@@ -75,6 +75,8 @@ class DcmController:
         #Otherwise it hides the widgets
         else:
             prevPage.grid_remove()
+    
+
 
 
     #login page logic
@@ -112,6 +114,10 @@ class DcmController:
     #Logic after Login
     def diffPaceMaker(self,pacemakerId):
         return self.currUser["pacemakerId"] ==pacemakerId
+    
+    #
+    def getPara(self, key):
+        return self.currUser[key]
    
 
 

@@ -6,6 +6,7 @@ from functools import partial
 class RegisterPage(tk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.flag = 0
 
         #enter username
         userLabel = ttk.Label(self, text="Username:").grid(row=3,column=0)
@@ -29,4 +30,7 @@ class RegisterPage(tk.Frame):
         #if username is already in database, run this function again
         #to simplify this, make validateUsername return False if the username is already in database
         self.grid()
+
+        # def userButton(self,username,password,passCheck):
+        #     flag =controller.regUser(username=username,password = password, passCheck = passCheck)
      
