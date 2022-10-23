@@ -28,12 +28,12 @@ class ParamUtil(tk.Frame):
         self.pButton.grid_remove()
         self.valButton.grid(row=self.r,column=2)
         self.newValue = tk.IntVar()
-        self.newVal.configure(textvariable = self.newValue.get())
+        self.newVal.configure(textvariable = self.newValue)
         self.newVal.grid(row=self.r,column=3)
 
     #to this function, we need to add something that'll update the new value in the user's profile
     def doneModify(self):
-        val = self.newValue
+        val = self.newValue.get()
         self.pButton.grid(row=self.r,column=2)
         self.valButton.grid_remove()
         self.paramVal.grid_remove()
@@ -79,14 +79,21 @@ class ParamsPage(tk.Frame):
             command=lambda:controller.moveToPage("HomePage")
             ).grid(row=10,column=0)
         
+        self.l_r_l = self.createParam(label1="Lower Rate Limit:",r1=3)
+        self.u_r_l = self.createParam(label1="Upper Rate Limit:",r1=4)
+        self.at_amp = self.createParam(label1="Atrial Amplitude:",r1=5)
+        self.at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=6)
+        self.arp = self.createParam(label1="ARP:",r1=7)
+        self.vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=5)
+        self.vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=6)
+        self.vrp = self.createParam(label1="VRP:",r1=7)
+
         self.grid()
 
     def selectMode(self):
         selected = self.mode.get()
-        l_r_l = self.createParam(label1="Lower Rate Limit:",r1=3)
-        u_r_l = self.createParam(label1="Upper Rate Limit:",r1=4)
-        l_r_l.grid()
-        u_r_l.grid()
+        self.l_r_l.grid()
+        self.u_r_l.grid()
         if (selected == "AOO"):
             self.modeAOO()
         elif (selected == "AAI"):
@@ -98,45 +105,42 @@ class ParamsPage(tk.Frame):
     
     #creates an instance of a parameter to be displayed and modified
     def createParam(self,label1,r1):
-        param = ParamUtil(parent=self.parent,controller=self.controller,label=label1,r=r1)
+        param = ParamUtil(parent=self,controller=self.controller,label=label1,r=r1)
         return param
         
-    #Parameters to display:
-        #Lower Rate Limit: all
-        #Upper Rate Limit: all
-        #Atrial Amplitude: AOO, AAI
-        #Atrial Pulse Width: AOO, AAI
-        #Ventricular Amplitude: VOO, VVI
-        #Ventricular Pulse Width: VOO, VVI
-        #VRP: VVI
-        #ARP: AAI    
-
     def modeAOO(self):
-        at_amp = self.createParam(label1="Atrial Amplitude:",r1=5)
-        at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=6)
-        at_amp.grid()
-        at_p_w.grid()
+        self.vt_amp.grid_remove()
+        self.vt_p_w.grid_remove()
+        self.arp.grid_remove()
+        self.vrp.grid_remove()
+        self.at_amp.grid()
+        self.at_p_w.grid()
+        
 
     def modeAAI(self):
-        at_amp = self.createParam(label1="Atrial Amplitude:",r1=5)
-        at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=6)
-        arp = self.createParam(label1="ARP:",r1=7)
-        at_amp.grid()
-        at_p_w.grid()
-        arp.grid()
+        self.vt_amp.grid_remove()
+        self.vt_p_w.grid_remove()
+        self.vrp.grid_remove()
+        self.at_amp.grid()
+        self.at_p_w.grid()
+        self.arp.grid()
+        
 
     def modeVOO(self):
-        vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=5)
-        vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=6)
-        vt_amp.grid()
-        vt_p_w.grid()
+        self.at_amp.grid_remove()
+        self.at_p_w.grid_remove()
+        self.arp.grid_remove()
+        self.vrp.grid_remove()
+        self.vt_amp.grid()
+        self.vt_p_w.grid()
+        
 
     def modeVVI(self):
-        vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=5)
-        vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=6)
-        vrp = self.createParam(label1="VRP:",r1=7)
-        vt_amp.grid()
-        vt_p_w.grid()
-        vrp.grid()
-
+        self.at_amp.grid_remove()
+        self.at_p_w.grid_remove()
+        self.arp.grid_remove()
+        self.vt_amp.grid()
+        self.vt_p_w.grid()
+        self.vrp.grid()
+        
 
