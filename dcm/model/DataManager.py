@@ -91,7 +91,7 @@ class DataManager():
     def removeUser(self,username):
         with sql.connect("user.db") as con:
             cur = con.cursor()
-            cur.excute("DELETE ")
+            cur.excute("DELETE FROM user_data WHERE username = ?",(username,))
 
 
 
