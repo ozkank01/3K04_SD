@@ -68,7 +68,7 @@ class DcmController:
         
 
         #deletes page if it doesn't need to retain a previous state
-        if prevPageName in ("WelcomePage","LoginPage","RegisterPage"):
+        if prevPageName in ("WelcomePage","LoginPage","RegisterPage","HomePage","ParamsPage"):
             self.activePages.pop(prevPageName,None)
             prevPage.destroy()
 

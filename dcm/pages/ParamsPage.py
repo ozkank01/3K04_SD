@@ -10,16 +10,16 @@ class ParamUtil(tk.Frame):
 
         self.paramLabel = ttk.Label(self,text=label).grid(row=self.r,column=0)
 
-        self.newValue = '0'     #this should be changed to match the value from user's profile
+        self.newValue = 0     #this should be changed to match the value from user's profile
 
         self.paramVal = ttk.Label(self,text=self.newValue)
         self.paramVal.grid(row=self.r,column=1)
 
-        self.pButton = ttk.Button(self,text="Modify",command=self.modify())
+        self.pButton = ttk.Button(self,text="Modify",command=self.modify)
         
         self.newVal = ttk.Entry(self,textvariable=self.r)
 
-        self.valButton = ttk.Button(self,text="OK",command=self.doneModify())
+        self.valButton = ttk.Button(self,text="OK",command=self.doneModify)
         
         self.pButton.grid(row=self.r,column=2)
 
@@ -27,15 +27,18 @@ class ParamUtil(tk.Frame):
     def modify(self):
         self.pButton.grid_remove()
         self.valButton.grid(row=self.r,column=2)
-        self.newValue = tk.StringVar()
-        self.newVal.configure(textvariable = self.newValue)
+        self.newValue = tk.IntVar()
+        self.newVal.configure(textvariable = self.newValue.get())
         self.newVal.grid(row=self.r,column=3)
 
     #to this function, we need to add something that'll update the new value in the user's profile
     def doneModify(self):
+        val = self.newValue
         self.pButton.grid(row=self.r,column=2)
         self.valButton.grid_remove()
-        self.paramVal.configure(text=self.newValue)
+        self.paramVal.grid_remove()
+        self.paramVal.configure(text=str(val))
+        self.paramVal.grid(row=self.r,column=1)
         self.newVal.grid_remove()
 
 
@@ -48,14 +51,15 @@ class ParamsPage(tk.Frame):
             self,
             text="View and Modify Parameters"
             ).grid(row=0,column=0,columnspan=2,pady=5)
-
+        
         self.mode = tk.StringVar(self)
         self.mode.set("AOO")
         
         pacingModes = ttk.OptionMenu(
             self,
             self.mode,
-            "AOO", "VOO", "AAI", "VVI"
+            "AOO",
+            "AOO", "AAI", "VOO", "VVI"
             )
         #pacingModes.pack()
         pacingModes.grid(row=1,column=0,columnspan=2)
@@ -63,8 +67,10 @@ class ParamsPage(tk.Frame):
         submitButton = ttk.Button(
             self,
             text="Submit",
-            command=self.selectMode()
+            command=self.selectMode
             )
+
+        submitButton.grid(row=2,column=0)
 
         toHome = ttk.Button(
             self, 
@@ -77,13 +83,15 @@ class ParamsPage(tk.Frame):
 
     def selectMode(self):
         selected = self.mode.get()
-        l_r_l = self.createParam(label1="Lower Rate Limit:",r1=1)
-        u_r_l = self.createParam(label1="Upper Rate Limit:",r1=2)
-        if (self.mode == "AOO"):
+        l_r_l = self.createParam(label1="Lower Rate Limit:",r1=3)
+        u_r_l = self.createParam(label1="Upper Rate Limit:",r1=4)
+        l_r_l.grid()
+        u_r_l.grid()
+        if (selected == "AOO"):
             self.modeAOO()
-        elif (self.mode == "AAI"):
+        elif (selected == "AAI"):
             self.modeAAI()
-        elif (self.mode == "VOO"):
+        elif (selected == "VOO"):
             self.modeVOO()
         else:
             self.modeVVI()
@@ -104,21 +112,31 @@ class ParamsPage(tk.Frame):
         #ARP: AAI    
 
     def modeAOO(self):
-        at_amp = self.createParam(label1="Atrial Amplitude:",r1=3)
-        at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=4)
+        at_amp = self.createParam(label1="Atrial Amplitude:",r1=5)
+        at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=6)
+        at_amp.grid()
+        at_p_w.grid()
 
     def modeAAI(self):
-        at_amp = self.createParam(label1="Atrial Amplitude:",r1=3)
-        at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=4)
-        arp = self.createParam(label1="ARP:",r1=5)
+        at_amp = self.createParam(label1="Atrial Amplitude:",r1=5)
+        at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=6)
+        arp = self.createParam(label1="ARP:",r1=7)
+        at_amp.grid()
+        at_p_w.grid()
+        arp.grid()
 
     def modeVOO(self):
-        vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=3)
-        vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=4)
+        vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=5)
+        vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=6)
+        vt_amp.grid()
+        vt_p_w.grid()
 
     def modeVVI(self):
-        vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=3)
-        vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=4)
-        vrp = self.createParam(label1="VRP:",r1=5)
+        vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=5)
+        vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=6)
+        vrp = self.createParam(label1="VRP:",r1=7)
+        vt_amp.grid()
+        vt_p_w.grid()
+        vrp.grid()
 
 
