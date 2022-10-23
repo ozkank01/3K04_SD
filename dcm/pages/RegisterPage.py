@@ -6,7 +6,6 @@ from functools import partial
 class RegisterPage(tk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-        self.flag = 0
 
         #enter username
         userLabel = ttk.Label(self, text="Username:").grid(row=3,column=0)

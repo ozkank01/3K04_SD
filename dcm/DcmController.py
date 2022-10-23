@@ -115,9 +115,16 @@ class DcmController:
     def diffPaceMaker(self,pacemakerId):
         return self.currUser["pacemakerId"] ==pacemakerId
     
-    #
+    #gets data from user
     def getPara(self, key):
         return self.currUser[key]
+    
+    #changes data for user
+    def changeParas(self,keys, vals):
+        for k,v in zip(keys,vals):
+            self.currUser[k] = v
+        self.dataManager.changeVals()
+
    
 
 
