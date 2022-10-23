@@ -1,8 +1,12 @@
 
+from pickle import FALSE
 import tkinter as tk
 from tkinter import ttk
 
-from model.DataManger import DataManger
+from numpy import true_divide
+
+from model.DataManager import DataManager
+from model.UserClass import User
 
 from pages.LoginPage import LoginPage
 from pages.WelcomePage import WelcomePage
@@ -16,8 +20,8 @@ class DcmController:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("DCM")
-        
-        self.dataMange = DataManger()
+        self.currUser = None
+        self.dataManager = DataManager()
 
         #theme
         style = ttk.Style()
@@ -32,7 +36,7 @@ class DcmController:
 
         #Updates current page
         self.currPage = tk.Frame()
-        self.moveToPage(pageName="WelcomePage")
+        self.moveToPage("WelcomePage")
 
 
 
@@ -54,9 +58,10 @@ class DcmController:
         if pageName in self.activePages:
             self.currPage = self.activePages[pageName]
             self.currPage.tkraise()
+            self.currPage.grid() #if page was active before the function call, it must have been a prevoius page that was .grid_removed
 
         else:
-            #otherwise creates an instance of page
+            #otherwise creates an instance of page an raises it to the top
             self.currPage =self.createPage(pageName=pageName)
             self.activePages[pageName] = self.currPage
             self.currPage.tkraise()
@@ -73,19 +78,41 @@ class DcmController:
 
 
     #login page logic
-    def login(self,username,password):
-        
-         if self.dataMange.userExist("user") and (self.dataMange.getUserPass("user") =="pass"):
-            self.moveToPage("HomePage")
+    def login(self,username,password):            
+            if self.dataManager.userExist(username) and (self.dataManager.getUserPass(username) ==password):
+                self.moveToPage("HomePage")
+                self.currUser = self.dataManager.getUserDict(username)
+                return True
+            
+            return False
         
     
     #registor page logic
-    def newUser(self,username ="user",):
-        if not self.dataMange.userExist(username):
-            self.dataMange.addUser(username=username, password="pass")
-            self.moveToPage("HomePage")
+    def toRegPage(self):
+        if(self.dataManager.getNumUser() < 10):       
+            self.moveToPage("RegisterPage")
             return True
         return False
+            
+
+    
+    def regUser(self,username,password, passCheck):
+       
+        if(password != passCheck):
+            return -1
+        
+        elif not self.dataManager.userExist(username):
+            self.dataManager.addUser(username=username, password=password)
+            self.moveToPage("HomePage")
+            self.currUser = self.dataManager.getUserDict(username)
+
+            return 1
+        return 0
+    
+    #Logic after Login
+    def diffPaceMaker(self,pacemakerId):
+        return self.currUser["pacemakerId"] ==pacemakerId
+   
 
 
 

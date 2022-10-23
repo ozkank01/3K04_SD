@@ -9,12 +9,24 @@ class RegisterPage(tk.Frame):
 
         #enter username
         userLabel = ttk.Label(self, text="Username:").grid(row=3,column=0)
-        user = tk.StringVar()
-        userEntry = ttk.Entry(self, textvariable=user).grid(row=3,column=1)
+        userEntry = ttk.Entry(self)
+        userEntry.grid(row=3,column=1)
+
+        #enter password
+        passLabel1 = ttk.Label(self, text="Password:").grid(row=4,column=0)
+        passEntry1 = ttk.Entry(self,show='*')
+        passEntry1.grid(row=4,column=1)
+       
+        #enter password again
+        passLabel2 = ttk.Label(self, text="Confirm Password:").grid(row=5,column=0) 
+        passEntry2 = ttk.Entry(self,show='*')
+        passEntry2.grid(row=5,column=1)
+       
 
         #check if username has been taken
         #validate = partial(validateUsername,user)
-        userButton = ttk.Button(self,text="Verify Username", command = lambda: controller.newUser()).grid(row=4,column=0,columnspan=2)
+        userButton = ttk.Button(self,text="Enter", command = lambda: controller.regUser(username =userEntry.get(),password = passEntry1.get(), passCheck = passEntry2.get())).grid(row=6,column=0,columnspan=2)
         #if username is already in database, run this function again
         #to simplify this, make validateUsername return False if the username is already in database
         self.grid()
+     

@@ -72,6 +72,8 @@ class ParamsPage(tk.Frame):
             style='Accent.TButton' ,
             command=lambda:controller.moveToPage("HomePage")
             ).grid(row=10,column=0)
+        
+        self.grid()
 
     def selectMode(self):
         selected = self.mode.get()
