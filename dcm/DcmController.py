@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from model.DataManger import DataManger
+
 from pages.LoginPage import LoginPage
 from pages.WelcomePage import WelcomePage
 from pages.RegisterPage import RegisterPage
@@ -15,6 +17,7 @@ class DcmController:
         self.root = tk.Tk()
         self.root.title("DCM")
         
+        self.dataMange = DataManger()
 
         #theme
         style = ttk.Style()
@@ -70,8 +73,21 @@ class DcmController:
 
 
     #login page logic
-    def loginUser(self):
-        self.moveToPage(pageName="LoginPage")
+    def login(self,username,password):
+        
+         if self.dataMange.userExist("user") and (self.dataMange.getUserPass("user") =="pass"):
+            self.moveToPage("HomePage")
+        
+    
+    #registor page logic
+    def newUser(self,username ="user",):
+        if not self.dataMange.userExist(username):
+            self.dataMange.addUser(username=username, password="pass")
+            self.moveToPage("HomePage")
+            return True
+        return False
+
+
 
 #runs the code
 if __name__ == "__main__":

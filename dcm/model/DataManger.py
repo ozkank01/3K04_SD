@@ -26,7 +26,8 @@ class DataManger():
             cur = con.cursor()
 
             hInputList = [h + " "+ "TEXT," if  h in ('username','password','paceMode')  else  h + " "+ "REAL," for h in self.headers]
-            cur.execute("CREATE TABLE IF NOT EXISTS user_data (?,?,?,?,?,?,?,?,?,?,?)", hInputList)
+            hInputList[-1] = hInputList[-1][:-1]
+            cur.execute("CREATE TABLE IF NOT EXISTS user_data ("+ "".join(hInputList)+")")
         
 
     def addUser(self, username ='',password ='',lowRlimit =0,uppRLimit =0, atrAmp =0,atrPulseW =0, ventAmp =0,ventPulseW =0,vRP =0,aRP =0,paceMode =""):
@@ -54,7 +55,7 @@ class DataManger():
     def userExist(self,username):
         with sq.connect("user.db") as con:
             cur = con.cursor()
-            cur.execute("SELECT username FROM user_data WHERE username =?",username)
+            cur.execute("SELECT username FROM user_data WHERE username =?",(username,))
             result = cur.fetchone()
             if result:
                 return True
@@ -63,13 +64,17 @@ class DataManger():
     def getUserPass(self,username):
         with sq.connect("user.db") as con:
             cur = con.cursor()
-            cur.execute("SELECT password FROM user_data WHERE username =?",username)
+            cur.execute("SELECT password FROM user_data WHERE username =?",(username,))
             result = cur.fetchone()
-            return result
+            print(result[0])
+            return result[0]
     
     def getUserData(self,username):
         with sq.connect("user.db") as con:
             cur = con.cursor()
-            cur.excute("SELECT * FROM user_data WHERE username  =?", username)
+            cur.excute("SELECT * FROM user_data WHERE username  =?", (username,))
+            result =cur.fetchone()
+            return result
+
 
 

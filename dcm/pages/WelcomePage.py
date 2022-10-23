@@ -5,6 +5,7 @@ from functools import partial
 class WelcomePage(tk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
 
         welcomeLabel = ttk.Label(self,text="Welcome to Pacemaker Manager!").grid(row=0,column=0,columnspan=2,pady=5)
 
@@ -13,7 +14,7 @@ class WelcomePage(tk.Frame):
             self, 
             text="Existing User",
             style='Accent.TButton' ,
-            command=lambda:controller.moveToPage("LoginPage")
+            command=lambda:self.controller.moveToPage("LoginPage")
             ).grid(row=1,column=0)
 
         #goes to register page
@@ -21,7 +22,7 @@ class WelcomePage(tk.Frame):
             self,
             text="New User",
             style='Accent.TButton',
-            command=lambda:controller.moveToPage("RegisterPage")
+            command=lambda:self.controller.moveToPage("RegisterPage")
             ).grid(row=1,column=1)
 
         self.grid()

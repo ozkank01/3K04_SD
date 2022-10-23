@@ -14,7 +14,7 @@ class RegisterPage(tk.Frame):
 
         #check if username has been taken
         #validate = partial(validateUsername,user)
-        userButton = ttk.Button(self,text="Verify Username").grid(row=4,column=0,columnspan=2)
+        userButton = ttk.Button(self,text="Verify Username", command = lambda: controller.newUser()).grid(row=4,column=0,columnspan=2)
         #if username is already in database, run this function again
         #to simplify this, make validateUsername return False if the username is already in database
         self.grid()
