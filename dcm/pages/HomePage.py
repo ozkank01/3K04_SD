@@ -1,6 +1,5 @@
 from tkinter import ttk
 import tkinter as tk
-from functools import partial
 
 class HomePage(tk.Frame):
     def __init__(self,parent,controller):

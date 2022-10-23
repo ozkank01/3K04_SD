@@ -71,7 +71,7 @@ class DcmController:
 
     #login page logic
     def loginUser(self):
-        self.movePage(pageName="LoginPage")
+        self.moveToPage(pageName="LoginPage")
 
 #runs the code
 if __name__ == "__main__":
