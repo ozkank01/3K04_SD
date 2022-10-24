@@ -25,15 +25,13 @@ class RegisterPage(tk.Frame):
         passEntry2.grid(row=5,column=1,padx=10,pady=10)
        
 
-        #check if username has been taken
-        #validate = partial(validateUsername,user)
+        #calls contoller to handle the registration process including check if the username is valid
         userButton = ttk.Button(self,text="Enter", command = lambda: controller.regUser(username =userEntry.get(),password = passEntry1.get(), passCheck = passEntry2.get())).grid(row=6,column=0,columnspan=2,padx=10,pady=10)
-        #if username is already in database, run this function again
-        #to simplify this, make validateUsername return False if the username is already in database
         self.grid()
 
-        # def userButton(self,username,password,passCheck):
-        #     flag =controller.regUser(username=username,password = password, passCheck = passCheck)
-        #     errLabel = ttk.Label(self,)
-        #     if flag ==-1:
+    
+    # def userButton(self,username,password,passCheck):
+    #     flag =controller.regUser(username=username,password = password, passCheck = passCheck)
+    #     errLabel = ttk.Label(self,)
+    #     if flag ==-1:
                 

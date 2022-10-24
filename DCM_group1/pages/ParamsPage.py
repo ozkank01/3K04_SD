@@ -59,6 +59,7 @@ class ParamsPage(tk.Frame):
         self.mode = tk.StringVar(self)
         self.mode.set("AOO")
         
+        #drop down menu with pacing modes
         pacingModes = ttk.OptionMenu(
             self,
             self.mode,
@@ -82,6 +83,7 @@ class ParamsPage(tk.Frame):
             command=lambda:controller.moveToPage("HomePage")
             ).grid(row=10,column=0,columnspan=4,padx=10,pady=10)
         
+        #creates instances of ParamUtil for parameters
         self.l_r_l = self.createParam(label1="Lower Rate Limit:",r1=3,key1='lowRlimit')
         self.u_r_l = self.createParam(label1="Upper Rate Limit:",r1=4,key1='uppRLimit')
         self.at_amp = self.createParam(label1="Atrial Amplitude:",r1=5,key1='atrAmp')
@@ -93,6 +95,7 @@ class ParamsPage(tk.Frame):
 
         self.grid()
 
+    #Selects what to display based on pacing mode chosen
     def selectMode(self):
         selected = self.mode.get()
         self.l_r_l.grid()
@@ -110,7 +113,8 @@ class ParamsPage(tk.Frame):
     def createParam(self,label1,r1,key1):
         param = ParamUtil(parent=self,controller=self.controller,label=label1,r=r1,key=key1)
         return param
-        
+    
+    #Functions that hide parameters based on pacing mode
     def modeAOO(self):
         self.vt_amp.grid_remove()
         self.vt_p_w.grid_remove()

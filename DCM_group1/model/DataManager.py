@@ -32,7 +32,7 @@ class DataManager():
     def changeVal(self,key,value,username):
         try:
             if not (key in self.headers):
-                raise Exception("Invalid key")
+                raise Exception("Invalid key") #done to try to limit  the possibility  of SQL injections since column accessed is variable
             
             with sql.connect("user.db") as con:
                 cur = con.cursor()
@@ -84,6 +84,7 @@ class DataManager():
             
             return result
 
+    #removes the row from the table with the given user name
     def removeUser(self,username):
         with sql.connect("user.db") as con:
             cur = con.cursor()

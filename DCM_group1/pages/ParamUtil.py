@@ -2,6 +2,7 @@
 from tkinter import ttk
 import tkinter as tk
 
+#vestigal implmentation kept in for now
 class ParamUtil(tk.Frame):
 
     def __init__(self,parent,controller,label,r):

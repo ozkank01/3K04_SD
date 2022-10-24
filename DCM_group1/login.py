@@ -2,6 +2,11 @@ from tkinter import ttk
 import tkinter as tk
 from functools import partial
 
+
+
+#vestigal implmentation kept in for now
+
+
 #utility function to HIDE widgets
 def remove(widget):
     widget.grid_remove()
