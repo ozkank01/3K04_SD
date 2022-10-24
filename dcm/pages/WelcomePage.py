@@ -7,7 +7,7 @@ class WelcomePage(tk.Frame):
         super().__init__(parent)
         
 
-        welcomeLabel = ttk.Label(self,text="Welcome to Pacemaker Manager!").grid(row=0,column=0,columnspan=2,pady=5)
+        welcomeLabel = ttk.Label(self,text="Welcome to Pacemaker Manager!").grid(row=0,column=0,columnspan=2,padx=10,pady=10)
 
         #goes to login page
         toLogin = ttk.Button(
@@ -15,7 +15,7 @@ class WelcomePage(tk.Frame):
             text="Existing User",
             style='Accent.TButton' ,
             command=lambda:controller.moveToPage("LoginPage")
-            ).grid(row=1,column=0)
+            ).grid(row=1,column=0,padx=10,pady=15)
 
         #goes to register page
         toRegister = ttk.Button(
@@ -23,5 +23,5 @@ class WelcomePage(tk.Frame):
             text="New User",
             style='Accent.TButton',
             command= controller.toRegPage
-            ).grid(row=1,column=1)
+            ).grid(row=1,column=1,padx=10,pady=15)
         self.grid()

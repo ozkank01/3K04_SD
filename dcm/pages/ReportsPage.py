@@ -8,12 +8,12 @@ class ReportsPage(tk.Frame):
         reportsLabel = ttk.Label(
             self,
             text="This page will be used to generate reports!"
-            ).grid(row=0,column=0,columnspan=2,pady=5)
+            ).grid(row=1,column=0,columnspan=2,padx=10,pady=10)
         
         toHome = ttk.Button(
             self, 
             text="Return Home",
             style='Accent.TButton' ,
             command=lambda:controller.moveToPage("HomePage")
-            ).grid(row=10,column=0)
+            ).grid(row=10,column=0,columnspan=2,padx=10,pady=10)
         self.grid()        

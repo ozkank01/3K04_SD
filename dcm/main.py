@@ -37,6 +37,9 @@ class DcmController:
         #possible pages
         self.possPages =  {"WelcomePage":WelcomePage,"LoginPage":LoginPage,"RegisterPage":RegisterPage,"HomePage":HomePage,"ReportsPage":ReportsPage,"ParamsPage":ParamsPage}
 
+        #self.status = tk.Canvas(self.root, width=500, height=20, background='gray75')
+        #self.status.create_oval(5,5,10,10,fill='red',outline='red')
+
         #Updates current page
         self.currPage = tk.Frame()
         self.moveToPage("WelcomePage")
@@ -124,7 +127,7 @@ class DcmController:
     
     #changes data for user
     def changePara(self,key, value):
-        self.currUser[key] = val
+        self.currUser[key] = value
         self.dataManager.changeVal(key = key, value = value,username = self.currUser['username'] )
 
    
