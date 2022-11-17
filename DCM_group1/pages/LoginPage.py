@@ -28,6 +28,7 @@ class LoginPage(tk.Frame):
         flag = self.controller.login(username = username, password = password)
         if (flag == False):
             errWindow = tk.Tk()
+            errWindow.config(bg='#eb4034')
             errWindow.title("ERROR")
             errText = ttk.Label(errWindow, text='Invalid username and/or password.').grid(column=0,row=0,padx=10,pady=50)
 

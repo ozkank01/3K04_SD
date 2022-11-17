@@ -7,9 +7,39 @@ import sqlite3 as sql
 
 class DataManager():
     def __init__(self):
-      self.headers = ('username','password','lowRlimit','uppRLimit', 'atrAmp','aPulseW', 'ventAmp','ventPulseW','vRP','aRP','paceMode', 'pacemakerId')
+      self.headers = ('username','password','lowRlimit','uppRLimit','maxSensorRate','fixedAVDelay','dynAVDelay','sensedAVDelayOffset','atrAmp','aPulseW', 'ventAmp','ventPulseW','atSens','ventSens','vRP','aRP','pvaRP','pvaRPExtension','hysterisis','rateSmoothing','atrDur','atrFallMode','atrFallTime','actThresh','reactTime',
+      'respFactor','recTime','paceMode', 'pacemakerId')
       self.createTable()
 
+
+    '''
+    PARAMETERS AND THEIR NAMES
+    lowRlimit                   Lower Rate Limit
+    uppRLimit                   Upper Rate Limit
+    maxSensorRate               Maximum Sensor Rate
+    fixedAVDelay                Fixed AV Delay
+    dynAVDelay                  Dynamic AV Delay
+    sensedAVDelayOffset         Sensed AV Delay Offset
+    atrAmp                      Atrial Amplitude
+    aPulseW                     Atrial Pulse Width
+    ventAmp                     Ventricular Amplitude
+    ventPulseW                  Ventricular Pulse Width
+    atSens                      Atrial Sensitivity
+    ventSens                    Ventricular Sensitivity
+    vRP                         VRP
+    aRP                         ARP
+    pvaRP                       PVARP
+    pvaRPExtension              PVARP Extension
+    hysterisis                  Hysterisis
+    rateSmoothing               Rate Smoothing
+    atrDur                      ATR Duration
+    atrFallMode                 ATR Fallback Mode
+    atrFallTime                 ATR Fallback Time
+    actThresh                   Activity Threshold
+    reactTime                   Reaction Time
+    respFactor                  Response Factor
+    recTime                     Recovery Time
+    '''
       
     
     #Creates table if there isn't one
