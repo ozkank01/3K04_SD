@@ -44,6 +44,13 @@ class DcmController:
         self.currPage = tk.Frame()
         self.moveToPage("WelcomePage")
 
+        #progressbar displays current connection status
+        self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
+        self.connect.grid(column=0,row=20,columnspan=5,padx=20,pady=5)
+        self.connect.start()  #initialized as disconnected
+        #label displays current connection status in words
+        self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
+        self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
 
 
     # Starts 
@@ -129,8 +136,22 @@ class DcmController:
     def changePara(self,key, value):
         self.currUser[key] = value
         self.dataManager.changeVal(key = key, value = value,username = self.currUser['username'] )
+    
+    #will be called once pacemaker is considered connected
+    def connected(self):
+        self.connect.stop()
+        self.connectLabel.grid_remove()
+        self.connectLabel.configure(text='Connected to Pacemaker!')
+        self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
 
-   
+    #will be called once pacemaker is considered disconnected 
+    def disconnected(self):
+        self.connect.start()
+        self.connectLabel.grid_remove()
+        self.connectLabel.configure(text='Connecting to Pacemaker...')
+        self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
+
+    #note: we still have to work out the internal logic to determine whether the pacemaker is connected or not!
 
 
 
