@@ -44,6 +44,7 @@ class DcmController:
         self.currPage = tk.Frame()
         self.moveToPage("WelcomePage")
 
+<<<<<<< Updated upstream
         #progressbar displays current connection status
         self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
         if (self.currUser != None):
@@ -52,6 +53,15 @@ class DcmController:
         #label displays current connection status in words
         self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
         if (self.currUser != None):
+=======
+        if self.currUser:
+            #progressbar displays current connection status
+            self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
+            self.connect.grid(column=0,row=20,columnspan=5,padx=20,pady=5)
+            self.connect.start()  #initialized as disconnected
+            #label displays current connection status in words
+            self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
+>>>>>>> Stashed changes
             self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
 
 
@@ -97,8 +107,8 @@ class DcmController:
     #login page logic
     def login(self,username,password):            
             if self.dataManager.userExist(username) and (self.dataManager.getUserPass(username) ==password):
-                self.moveToPage("HomePage")
                 self.currUser = self.dataManager.getUserDict(username)
+                self.moveToPage("HomePage")
                 return True
             
             return False
@@ -115,16 +125,22 @@ class DcmController:
     
     def regUser(self,username,password, passCheck):
        
-        if(password != passCheck):
+        if self.dataManager.userExist(username):
+            #User exists already
+            return 0
+       
+        elif(password != passCheck):
+            #second entry of password doesn't match
             return -1
         
-        elif not self.dataManager.userExist(username):
-            self.dataManager.addUser(username=username, password=password)
-            self.moveToPage("HomePage")
-            self.currUser = self.dataManager.getUserDict(username)
+       
+        
 
-            return 1
-        return 0
+        self.dataManager.addUser(username=username, password=password)
+        self.moveToPage("HomePage")
+        self.currUser = self.dataManager.getUserDict(username)
+        return 1
+        
     
     #Logic after Login
     def diffPaceMaker(self,pacemakerId):
