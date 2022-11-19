@@ -27,14 +27,16 @@ class WelcomePage(tk.Frame):
             ).grid(row=1,column=1,padx=10,pady=15)
         self.grid()
 
-        #checks if there are 10 users. If not moves to registration page. Otherwise it outpust an error 
-        def checkLimReg(self):
-            flag = self.controller.toRegPage()
 
-            if self.errorLabel:
-                self.errorLabel.destroy()
 
-            # flag is False, then more than 10 users exist
-            if not flag:
-                self.errorLabel = ttk.Label(self, text="10 Users Exist. User Limit Reached.",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
+    #checks if there are 10 users. If not moves to registration page. Otherwise it outpust an error 
+    def checkLimReg(self):
+        flag = self.controller.toRegPage()
+
+        if self.errorLabel:
+            self.errorLabel.destroy()
+
+        # flag is False, then more than 10 users exist
+        if not flag:
+            self.errorLabel = ttk.Label(self, text="10 Users Exist. User Limit Reached.",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
         

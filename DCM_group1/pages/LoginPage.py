@@ -21,7 +21,7 @@ class LoginPage(tk.Frame):
         passEntry = ttk.Entry(self,show='*')
         passEntry.grid(row=4,column=1,padx=10,pady=10)
        
-        
+        #button that takes in input and iniaites login attempt
         loginButton = ttk.Button(self, text="Login", command= lambda: self.checkLogin(username =userEntry.get(),password = passEntry.get())).grid(row=5,column=0,columnspan=2,padx=10,pady=10)
         self.grid()
 
@@ -31,13 +31,16 @@ class LoginPage(tk.Frame):
         if self.errorLabel:
             self.errorLabel.destroy()
 
-        # flag is 0 error means user exists
+        #displays label based on error
         if flag == 0:
+
+            # flag is 0, error means user does not exist
             self.errorLabel = ttk.Label(self, text="User Does Not Exist",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
         
-        # flag is 1 error means second entry of password doesn't match
+        
         elif flag ==-1:
-
+            
+            # flag is -1, error means incorrect password
             self.errorLabel = ttk.Label(self, text="Incorrect Password",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
 
         

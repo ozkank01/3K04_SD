@@ -27,24 +27,30 @@ class RegisterPage(tk.Frame):
         passEntry2.grid(row=5,column=1,columnspan=2,padx=10,pady=10)
        
 
-        #calls contoller to handle the registration process including check if the username is valid
+        #calls checkReg to attempt registration
         userButton = ttk.Button(self,text="Enter", command = lambda: self.checkReg(username =userEntry.get(),password = passEntry1.get(), passCheck = passEntry2.get())).grid(row=6,column=0,columnspan=3,padx=10,pady=10)
         self.grid()
 
     
+    #calls registration function and handles incorrect input
     def checkReg(self,username,password,passCheck):
         flag = self.controller.regUser(username=username,password = password, passCheck = passCheck)
-
+        
+        #gets rid of error label from previos flag
         if self.errorLabel:
             self.errorLabel.destroy()
 
-        # flag is 0 error means user exists
+        
+        #Displays error label based on flag
         if flag == 0:
+
+             # flag is 0, error means user exists.
             self.errorLabel = ttk.Label(self, text="User Exists",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
         
-        # flag is 1 error means second entry of password doesn't match
+        
         elif flag ==-1:
 
+            # flag is -1, error means second entry of password doesn't match
             self.errorLabel = ttk.Label(self, text="Passwords entries do not match",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
         
        
