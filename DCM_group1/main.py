@@ -44,26 +44,8 @@ class DcmController:
         self.currPage = tk.Frame()
         self.moveToPage("WelcomePage")
 
-<<<<<<< Updated upstream
-        #progressbar displays current connection status
-        self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
-        if (self.currUser != None):
-            self.connect.grid(column=0,row=20,columnspan=5,padx=20,pady=5)
-            self.connect.start()  #initialized as disconnected
-        #label displays current connection status in words
-        self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
-        if (self.currUser != None):
-=======
-        if self.currUser:
-            #progressbar displays current connection status
-            self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
-            self.connect.grid(column=0,row=20,columnspan=5,padx=20,pady=5)
-            self.connect.start()  #initialized as disconnected
-            #label displays current connection status in words
-            self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
->>>>>>> Stashed changes
-            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
-
+       
+        
 
     # Starts 
     def dcmRun(self):
@@ -100,6 +82,16 @@ class DcmController:
         #Otherwise it hides the widgets
         else:
             prevPage.grid_remove()
+
+        if self.currUser:
+            print(5)
+            #progressbar displays current connection status
+            self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
+            self.connect.grid(column=0,row=20,columnspan=5,padx=20,pady=5)
+            self.connect.start()  #initialized as disconnected
+            #label displays current connection status in words
+            self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
+            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
     
 
 
