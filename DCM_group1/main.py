@@ -96,17 +96,24 @@ class DcmController:
 
 
 
-    #login page logic
+    #-------------login page logic---------------
+
+    #logs in an existing user
     def login(self,username,password):            
-            if self.dataManager.userExist(username) and (self.dataManager.getUserPass(username) ==password):
-                self.currUser = self.dataManager.getUserDict(username)
-                self.moveToPage("HomePage")
-                return True
+            if not self.dataManager.userExist(username):
+                
+                return 0
+            elif  not (self.dataManager.getUserPass(username) ==password):
+                return -1 
             
-            return False
+            self.currUser = self.dataManager.getUserDict(username)
+            self.moveToPage("HomePage")
+            return 1
         
     
-    #registor page logic
+    #------------Register page logic----------------
+
+    #moves to Register page
     def toRegPage(self):
         if(self.dataManager.getNumUser() < 10):       
             self.moveToPage("RegisterPage")
@@ -114,7 +121,7 @@ class DcmController:
         return False
             
 
-    
+    #
     def regUser(self,username,password, passCheck):
        
         if self.dataManager.userExist(username):
@@ -127,14 +134,14 @@ class DcmController:
         
        
         
-
+        #registers accepted input
         self.dataManager.addUser(username=username, password=password)
         self.moveToPage("HomePage")
         self.currUser = self.dataManager.getUserDict(username)
         return 1
         
     
-    #Logic after Login
+    #********User specific functions(after logging in)**********
     def diffPaceMaker(self,pacemakerId):
         return self.currUser["pacemakerId"] ==pacemakerId
     

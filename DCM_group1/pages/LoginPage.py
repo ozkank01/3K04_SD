@@ -6,6 +6,7 @@ class LoginPage(tk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.controller = controller
+        self.errorLabel =None
 
         loginLabel = ttk.Label(self,text="Welcome to Pacemaker Manager!").grid(row=0,column=0,columnspan=2,padx=10,pady=10)
         
@@ -25,11 +26,18 @@ class LoginPage(tk.Frame):
         self.grid()
 
     def checkLogin(self,username,password):
-        flag = self.controller.login(username = username, password = password)
-        if (flag == False):
-            errWindow = tk.Tk()
-            errWindow.config(bg='#eb4034')
-            errWindow.title("ERROR")
-            errText = ttk.Label(errWindow, text='Invalid username and/or password.').grid(column=0,row=0,padx=10,pady=50)
+        flag = self.controller.login(username=username,password = password)
+
+        if self.errorLabel:
+            self.errorLabel.destroy()
+
+        # flag is 0 error means user exists
+        if flag == 0:
+            self.errorLabel = ttk.Label(self, text="User Does Not Exist",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
+        
+        # flag is 1 error means second entry of password doesn't match
+        elif flag ==-1:
+
+            self.errorLabel = ttk.Label(self, text="Incorrect Password",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
 
         
