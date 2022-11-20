@@ -4,16 +4,8 @@ import sqlite3
 
 import sqlite3 as sql
 
-
-class DataManager():
-    def __init__(self):
-      self.headers = ('username','password','lowRlimit','uppRLimit','maxSensorRate','fixedAVDelay','dynAVDelay','sensedAVDelayOffset','atrAmp','aPulseW', 'ventAmp','ventPulseW','atSens','ventSens','vRP','aRP','pvaRP','pvaRPExtension','hysterisis','rateSmoothing','atrDur','atrFallMode','atrFallTime','actThresh','reactTime',
-      'respFactor','recTime','paceMode', 'pacemakerId')
-      self.createTable()
-
-
     '''
-    PARAMETERS AND THEIR NAMES
+    PARAMETERS AND THEIR KEY NAMES
     lowRlimit                   Lower Rate Limit
     uppRLimit                   Upper Rate Limit
     maxSensorRate               Maximum Sensor Rate
@@ -30,7 +22,7 @@ class DataManager():
     aRP                         ARP
     pvaRP                       PVARP
     pvaRPExtension              PVARP Extension
-    hysterisis                  Hysterisis
+    hysterisis                  Hysterisis0
     rateSmoothing               Rate Smoothing
     atrDur                      ATR Duration
     atrFallMode                 ATR Fallback Mode
@@ -40,7 +32,70 @@ class DataManager():
     respFactor                  Response Factor
     recTime                     Recovery Time
     '''
-      
+
+class DataManager():
+    def __init__(self):
+        self.headers = ('username','password','lowRlimit','uppRLimit','maxSensorRate','fixedAVDelay','dynAVDelay','sensedAVDelayOffset','atrAmp','aPulseW', 'ventAmp','ventPulseW','atSens','ventSens','vRP','aRP','pvaRP','pvaRPExtension','hysterisis','rateSmoothing','atrDur','atrFallMode','atrFallTime','actThresh','reactTime',
+        'respFactor','recTime','paceMode','pacemakerId')
+        self.createTable()
+        self.values = {
+            'lowRlimit':[], 'uppRLimit':[], 'maxSensorRate':[], 'fixedAVDelay':[],'dynAVDelay':['OFF','ON'], #DONT APPEND
+            'sensedAVDelayOffset':['OFF',-10,-20,-30,-40,-50,-60,-70,-80,-90,-100], #DONT APPEND
+            'atrAmp':['OFF'], 'aPulseW':['0.05'], 'ventAmp':['OFF'], 'ventPulseW':['0.05'],
+            'atSens':['0.25','0.5','0.75'],'ventSens':['0.25','0.5','0.75'],'vRP':[],'aRP':[],'pvaRP':[],'pvaRPExtension':['OFF'],
+            'hysterisis':['OFF'],'rateSmoothing':['OFF','3','6','9','12','15','18','21','25'], #DONT APPEND
+            'atrDur':['10','20','40','60','80'], 'atrFallMode':['OFF','ON'], #DONT APPEND
+            'atrFallTime':[], 'actThresh':['Very Low','Low','Low-Medium','Medium','Medium-High','High','Very High'], #DONT APPEND
+            'reactTime':[], 'respFactor':[], 'recTime':[],
+            'paceMode':['OFF','DDD','VDD','DDI','DOO','AOO','AAI','VOO','VVI','AAT','VVT','DDDR','VDDR','DDIR','DOOR','AOOR','AAIR','VOOR','VVIR']
+        }
+        
+        self.increments = {
+            'uppRLimit':(50,5,175),
+            'maxSensorRate':(50,5,175),
+            'fixedAVDelay':(70,10,300),
+            'aPulseW':(0.1,0.1,1.9),
+            'ventPulseW':(0.1,0.1,1.9),
+            'atSens':(1.0,0.5,10),
+            'ventSens':(1.0,0.5,10),
+            'vRP':(150,10,500),
+            'aRP':(150,10,500),
+            'pvaRP':(150,10,500),
+            'pvaRPExtension':(50,50,400),
+            'atrDur':(100,100,2000),
+            'atrFallTime':(1,1,5),
+            'reactTime':(10,10,50),
+            'respFactor':(1,1,16),
+            'recTime':(2,1,16)
+        }
+    
+        for key in self.values:
+            if (key == 'lowRlimit' or key == 'hysterisis'):
+                for x in range(30,50,5):
+                    self.values[key].append(str(x))
+                for x in range(50,90):
+                    self.values[key].append(str(x))
+                for x in range(90,176,5):
+                    self.values[key].append(str(x))
+            elif (key == 'atrAmp' or key == 'ventAmp'):
+                # Divided by 10 and 2 because step must be INT
+                for x in range(5,33):
+                    self.values[key].append(str(x/10))
+                for x in range(7,15):
+                    self.values[key].append(str(x/2))
+            elif key in self.increments:
+                i = self.increments[key]
+                for x in range((i[2]-i[0])/i[1] + 1):
+                    self.values[key].append(str(i[0] + x*i[1]))
+
+        self.nominal = {
+            'lowRlimit':'60', 'uppRLimit':'120', 'maxSensorRate':'120', 'fixedAVDelay':'150',
+            'dynAVDelay':'OFF', 'sensedAVDelayOffset':'OFF', 'atrAmp':'3.5', 'aPulseW':'0.4', 'ventAmp':'3.5', 'ventPulseW':'0.4',
+            'atSens':'0.75', 'ventSens':'2.5', 'vRP':'320', 'aRP':'250', 'pvaRP':'250', 'pvaRPExtension':'OFF',
+            'hysterisis':'OFF', 'rateSmoothing':'OFF', 'atrDur':'20', 'atrFallMode':'OFF', 'atrFallTime':'1',
+            'actThresh':'Medium', 'reactTime':'30', 'respFactor':'8', 'recTime':'5', 'paceMode':'DDD'
+        }
+
     
     #Creates table if there isn't one
     def createTable(self):
@@ -50,7 +105,6 @@ class DataManager():
             hInputList = [h + " "+ "TEXT," if  h in ('username','password','paceMode','pacemakerId')  else  h + " "+ "REAL," for h in self.headers]
             hInputList[-1] = hInputList[-1][:-1]
             cur.execute("CREATE TABLE IF NOT EXISTS user_data ("+ "".join(hInputList)+")")
-        
 
     #Adds a user to the table
     def addUser(self, username ='',password ='',lowRlimit =0,uppRLimit =0, atrAmp =0,aPulseW =0, ventAmp =0,ventPulseW =0,vRP =0,aRP =0,paceMode ="", pacemakerId =""):
