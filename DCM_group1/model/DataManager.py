@@ -174,5 +174,9 @@ class DataManager():
             cur = con.cursor()
             cur.excute("DELETE FROM user_data WHERE username = ?",(username,))
 
+    def getPossValues(self,key):
+        return self.values[key]
+    
+
 
 
