@@ -21,15 +21,22 @@ class DcmController:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("DCM")
+
+
         self.currUser = None
         self.dataManager = DataManager()
+        
 
+        #container for pages
         self.container = tk.Frame(self.root)
         self.container.grid()
         #theme
         style = ttk.Style()
         self.root.tk.call("source", "theme/forest-light.tcl")
         style.theme_use("forest-light")
+
+        #bottom bar frame
+        self.bttmBar =tk.Frame(self.root)
 
         #pages active
         self.activePages = {}
@@ -86,15 +93,32 @@ class DcmController:
         if self.currUser:
             print(5)
             #progressbar displays current connection status
-            self.connect = ttk.Progressbar(self.root,orient='horizontal',mode='indeterminate',length=300)
-            self.connect.grid(column=0,row=20,columnspan=5,padx=20,pady=5)
-            self.connect.start()  #initialized as disconnected
+            connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=300)
+            connect.grid(column=0,row=0,columnspan=5,padx=20,pady=5)
+            connect.start()  #initialized as disconnected
+
+
             #label displays current connection status in words
-            self.connectLabel = ttk.Label(self.root,text='Connecting to Pacemaker...')
-            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
+            connectLabel = ttk.Label(self.bttmBar,text='Connecting to Pacemaker...',)
+            connectLabel.grid(column=0,row=1,columnspan=5,padx=20,pady=10)
+
+            #Log out button
+            logoutBtt = ttk.Button(
+            self.bttmBar,
+            text="Logout",
+            style='Accent.TButton',
+            command= self.logout
+            )
+            logoutBtt.grid(column=5,row=1,rowspan= 2,sticky='NW')
+
+            self.bttmBar.grid()
     
 
-
+    #-------------Bottom Bar Logic---------------
+    def logout(self):
+        self.currUser =None
+        self.moveToPage("WelcomePage")
+        self.bttmBar.grid_remove()
 
     #-------------login page logic---------------
 
