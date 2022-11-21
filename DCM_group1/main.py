@@ -154,6 +154,10 @@ class DcmController:
         self.currUser[key] = value
         self.dataManager.changeVal(key = key, value = value,username = self.currUser['username'] )
     
+    #gets list of values for spinbox (ParamsPage)
+    def getValues(self,key):
+        return self.dataManager.getPossValues(key)
+
     #will be called once pacemaker is considered connected
     def connected(self):
         if (self.currUser != None):

@@ -17,9 +17,12 @@ class ParamUtil(tk.Frame):
         # label for parameters
         self.paramLabel = ttk.Label(self,text=label).grid(row=self.r,column=0,padx=5,pady=5,sticky=tk.W)
         # assign displayed value to the current value in user's profile
-        self.value = self.controller.getPara(self.key)
+        self.value = tk.StringVar(self)
+        self.vList = self.controller.getValues(self.key)
 
-        self.entry = ttk.Spinbox(self,from_=0,to=100,textvariable=self.value,wrap=False)
+        self.entry = ttk.Spinbox(self,values=self.vList,textvariable=self.value,wrap=False)
+        self.value.set(self.controller.getPara(self.key))
+        self.entry.grid(row=self.r,column=1)
         '''
         # displayed value
         self.displayVal = ttk.Label(self,text=self.value)
@@ -80,14 +83,16 @@ class ParamsPage(tk.Frame):
         
         # initialize drop-down menu to AOO. will change this later!
         self.mode = tk.StringVar(self)
-        self.mode.set("AOO")
+        self.initial = self.controller.getPara('paceMode')
+        self.mode.set(self.initial)
+        self.vals = self.controller.getValues('paceMode')
         
         # drop down menu with pacing modes AOO, AAI, VOO, and VVI
         pacingModes = ttk.OptionMenu(
             self,
             self.mode,
-            "AOO",
-            "AOO", "AAI", "VOO", "VVI"
+            self.initial,
+            *self.vals
             )
         pacingModes.grid(row=1,column=0,columnspan=2,padx=10,pady=10)
 

@@ -4,34 +4,34 @@ import sqlite3
 
 import sqlite3 as sql
 
-    '''
-    PARAMETERS AND THEIR KEY NAMES
-    lowRlimit                   Lower Rate Limit
-    uppRLimit                   Upper Rate Limit
-    maxSensorRate               Maximum Sensor Rate
-    fixedAVDelay                Fixed AV Delay
-    dynAVDelay                  Dynamic AV Delay
-    sensedAVDelayOffset         Sensed AV Delay Offset
-    atrAmp                      Atrial Amplitude
-    aPulseW                     Atrial Pulse Width
-    ventAmp                     Ventricular Amplitude
-    ventPulseW                  Ventricular Pulse Width
-    atSens                      Atrial Sensitivity
-    ventSens                    Ventricular Sensitivity
-    vRP                         VRP
-    aRP                         ARP
-    pvaRP                       PVARP
-    pvaRPExtension              PVARP Extension
-    hysterisis                  Hysterisis0
-    rateSmoothing               Rate Smoothing
-    atrDur                      ATR Duration
-    atrFallMode                 ATR Fallback Mode
-    atrFallTime                 ATR Fallback Time
-    actThresh                   Activity Threshold
-    reactTime                   Reaction Time
-    respFactor                  Response Factor
-    recTime                     Recovery Time
-    '''
+'''
+PARAMETERS AND THEIR KEY NAMES
+lowRlimit                   Lower Rate Limit
+uppRLimit                   Upper Rate Limit
+maxSensorRate               Maximum Sensor Rate
+fixedAVDelay                Fixed AV Delay
+dynAVDelay                  Dynamic AV Delay
+sensedAVDelayOffset         Sensed AV Delay Offset
+atrAmp                      Atrial Amplitude
+aPulseW                     Atrial Pulse Width
+ventAmp                     Ventricular Amplitude
+ventPulseW                  Ventricular Pulse Width
+atSens                      Atrial Sensitivity
+ventSens                    Ventricular Sensitivity
+vRP                         VRP
+aRP                         ARP
+pvaRP                       PVARP
+pvaRPExtension              PVARP Extension
+hysterisis                  Hysterisis0
+rateSmoothing               Rate Smoothing
+atrDur                      ATR Duration
+atrFallMode                 ATR Fallback Mode
+atrFallTime                 ATR Fallback Time
+actThresh                   Activity Threshold
+reactTime                   Reaction Time
+respFactor                  Response Factor
+recTime                     Recovery Time
+'''
 
 class DataManager():
     def __init__(self):
@@ -41,8 +41,8 @@ class DataManager():
         self.values = {
             'lowRlimit':[], 'uppRLimit':[], 'maxSensorRate':[], 'fixedAVDelay':[],'dynAVDelay':['OFF','ON'], #DONT APPEND
             'sensedAVDelayOffset':['OFF',-10,-20,-30,-40,-50,-60,-70,-80,-90,-100], #DONT APPEND
-            'atrAmp':['OFF'], 'aPulseW':['0.05'], 'ventAmp':['OFF'], 'ventPulseW':['0.05'],
-            'atSens':['0.25','0.5','0.75'],'ventSens':['0.25','0.5','0.75'],'vRP':[],'aRP':[],'pvaRP':[],'pvaRPExtension':['OFF'],
+            'atrAmp':['OFF'], 'aPulseW':[], 'ventAmp':['OFF'], 'ventPulseW':[],
+            'atSens':[],'ventSens':[],'vRP':[],'aRP':[],'pvaRP':[],'pvaRPExtension':['OFF'],
             'hysterisis':['OFF'],'rateSmoothing':['OFF','3','6','9','12','15','18','21','25'], #DONT APPEND
             'atrDur':['10','20','40','60','80'], 'atrFallMode':['OFF','ON'], #DONT APPEND
             'atrFallTime':[], 'actThresh':['Very Low','Low','Low-Medium','Medium','Medium-High','High','Very High'], #DONT APPEND
@@ -54,10 +54,12 @@ class DataManager():
             'uppRLimit':(50,5,175),
             'maxSensorRate':(50,5,175),
             'fixedAVDelay':(70,10,300),
-            'aPulseW':(0.1,0.1,1.9),
-            'ventPulseW':(0.1,0.1,1.9),
-            'atSens':(1.0,0.5,10),
-            'ventSens':(1.0,0.5,10),
+            'atrAmp':(0.1,0.1,5),
+            'aPulseW':(1,1,30),
+            'ventAmp':(0.1,0.1,5),
+            'ventPulseW':(1,1,30),
+            'atSens':(0,0.1,5),
+            'ventSens':(0,0.1,5),
             'vRP':(150,10,500),
             'aRP':(150,10,500),
             'pvaRP':(150,10,500),
@@ -77,21 +79,15 @@ class DataManager():
                     self.values[key].append(str(x))
                 for x in range(90,176,5):
                     self.values[key].append(str(x))
-            elif (key == 'atrAmp' or key == 'ventAmp'):
-                # Divided by 10 and 2 because step must be INT
-                for x in range(5,33):
-                    self.values[key].append(str(x/10))
-                for x in range(7,15):
-                    self.values[key].append(str(x/2))
             elif key in self.increments:
                 i = self.increments[key]
-                for x in range((i[2]-i[0])/i[1] + 1):
+                for x in range(int((i[2]-i[0])/i[1] + 1)):
                     self.values[key].append(str(i[0] + x*i[1]))
 
         self.nominal = {
             'lowRlimit':'60', 'uppRLimit':'120', 'maxSensorRate':'120', 'fixedAVDelay':'150',
-            'dynAVDelay':'OFF', 'sensedAVDelayOffset':'OFF', 'atrAmp':'3.5', 'aPulseW':'0.4', 'ventAmp':'3.5', 'ventPulseW':'0.4',
-            'atSens':'0.75', 'ventSens':'2.5', 'vRP':'320', 'aRP':'250', 'pvaRP':'250', 'pvaRPExtension':'OFF',
+            'dynAVDelay':'OFF', 'sensedAVDelayOffset':'OFF', 'atrAmp':'5', 'aPulseW':'1', 'ventAmp':'5', 'ventPulseW':'1',
+            'atSens':'0', 'ventSens':'0', 'vRP':'320', 'aRP':'250', 'pvaRP':'250', 'pvaRPExtension':'OFF',
             'hysterisis':'OFF', 'rateSmoothing':'OFF', 'atrDur':'20', 'atrFallMode':'OFF', 'atrFallTime':'1',
             'actThresh':'Medium', 'reactTime':'30', 'respFactor':'8', 'recTime':'5', 'paceMode':'DDD'
         }
@@ -107,10 +103,10 @@ class DataManager():
             cur.execute("CREATE TABLE IF NOT EXISTS user_data ("+ "".join(hInputList)+")")
 
     #Adds a user to the table
-    def addUser(self, username ='',password ='',lowRlimit =0,uppRLimit =0, atrAmp =0,aPulseW =0, ventAmp =0,ventPulseW =0,vRP =0,aRP =0,paceMode ="", pacemakerId =""):
+    def addUser(self,username ='',password ='',pacemakerId =""):
          with sql.connect("user.db") as con:
             cur = con.cursor()
-            cur.execute("INSERT INTO user_data values (?,?,?,?,?,?,?,?,?,?,?,?)",(username ,password ,lowRlimit ,uppRLimit , atrAmp ,aPulseW , ventAmp ,ventPulseW ,vRP ,aRP,paceMode,pacemakerId ))
+            cur.execute("INSERT INTO user_data values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(username,password,'60','120','120','150','OFF','OFF','5','1','5','1','0','0','320','250','250','OFF','OFF','OFF','20','OFF','1','Medium','30','8','5','DDD',pacemakerId ))
     
     #Changes a tuple of values with respect to a tuple of keys 
     def changeVal(self,key,value,username):
