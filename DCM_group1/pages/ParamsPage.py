@@ -18,6 +18,9 @@ class ParamUtil(tk.Frame):
         self.paramLabel = ttk.Label(self,text=label).grid(row=self.r,column=0,padx=5,pady=5,sticky=tk.W)
         # assign displayed value to the current value in user's profile
         self.value = self.controller.getPara(self.key)
+
+        self.entry = ttk.Spinbox(self,from_=0,to=100,textvariable=self.value,wrap=False)
+        '''
         # displayed value
         self.displayVal = ttk.Label(self,text=self.value)
         self.displayVal.grid(row=self.r,column=1,padx=5,pady=5,sticky=tk.W)
@@ -30,7 +33,7 @@ class ParamUtil(tk.Frame):
         self.okButton = ttk.Button(self,text="OK",command=self.doneModify)
         
         self.modButton.grid(row=self.r,column=2,padx=5,pady=5,sticky=tk.W)
-
+        '''
     # modify will open the textbox, allowing the user to input a new value
     def modify(self):
         # switch modify button to OK button
