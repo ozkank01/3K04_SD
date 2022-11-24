@@ -222,7 +222,7 @@ class DataManager():
         elif v > float(self.values[key][len(self.values[key])-1]):
             #if value is greater than highest value, store as MAX value
             return 1
-        elif v < self.values[key][0]:
+        elif v < float(self.values[key][0]):
             #if value is smaller than lowest value, store as MIN value
             return 2
         else:
