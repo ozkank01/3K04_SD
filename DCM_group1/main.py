@@ -200,6 +200,16 @@ class DcmController:
 
     #note: we still have to work out the internal logic to determine whether the pacemaker is connected or not!
 
+    # used to check if a parameter is valid
+    def checkPara(self,key,value):
+        return self.dataManager.checkValue(key,value)
+    
+    def min(self,key):
+        return self.dataManager.getMin(key)
+
+    def max(self,key):
+        return self.dataManager.getMax(key)
+
 
 
 #runs the code

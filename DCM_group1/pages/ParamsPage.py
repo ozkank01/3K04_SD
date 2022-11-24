@@ -20,52 +20,60 @@ class ParamUtil(tk.Frame):
         self.value = tk.StringVar(self)
         self.vList = self.controller.getValues(self.key)
 
+        # spinbox to enter parameters; values loaded from data manager
         self.entry = ttk.Spinbox(self,values=self.vList,textvariable=self.value,wrap=False)
         self.value.set(self.controller.getPara(self.key))
         self.entry.grid(row=self.r,column=1)
-        '''
-        # displayed value
-        self.displayVal = ttk.Label(self,text=self.value)
-        self.displayVal.grid(row=self.r,column=1,padx=5,pady=5,sticky=tk.W)
 
-        # when this button is clicked, a textbox (self.newVal) pops up so you can edit the value
-        self.modButton = ttk.Button(self,text="Modify",command=self.modify)
-        # textbox to enter new value
-        self.newVal = ttk.Entry(self,textvariable=self.r)
-        # when this button is clicked, the new value (stored in self.value) is updated in the database
-        self.okButton = ttk.Button(self,text="OK",command=self.doneModify)
+        #submit button; click to change value in the database
+        self.submit = ttk.Button(self,text="OK",command=self.submitF)
+        self.submit.grid(row=self.r,column=2,padx=5,pady=5,sticky=tk.W)
         
-        self.modButton.grid(row=self.r,column=2,padx=5,pady=5,sticky=tk.W)
-        '''
-    # modify will open the textbox, allowing the user to input a new value
-    def modify(self):
-        # switch modify button to OK button
-        self.modButton.grid_remove()
-        self.okButton.grid(row=self.r,column=2,padx=5,pady=5,sticky=tk.W)
-        # display textbox
-        self.value = tk.IntVar()
-        self.newVal.configure(textvariable = self.value)
-        self.newVal.grid(row=self.r,column=3,padx=5,pady=5,sticky=tk.W)
+        self.send = ttk.Button(self,text="Submit to Pacemaker",command=self.sendF)
+        self.cancel = ttk.Button(self,text="CANCEL",command=self.cancelF)
+        self.message = ttk.Label(self,text="",foreground="#cf0e25")
 
-    # doneModify will check if the new value is within appropriate limits, and if so, will
+    # submitF will check if the new value is within appropriate limits, and if so, will
     # update the value in the database + close the textbox
-    def doneModify(self):
+    def submitF(self):
         val = self.value.get()
-        # **CHANGE IF STATEMENT TO CHECK IF THE VALUE IS WITHIN LIMITS
-        if True:
-            # update the value in the database
-            self.controller.changePara(self.key,val)
-            # switch OK button to modify button
-            self.modButton.grid(row=self.r,column=2,padx=5,pady=5,sticky=tk.W)
-            self.okButton.grid_remove()
-            # display the updated value
-            self.displayVal.grid_remove()
-            self.displayVal.configure(text=str(val))
-            self.displayVal.grid(row=self.r,column=1,sticky=tk.W)
-            # remove textbox
-            self.newVal.grid_remove()
+        result = self.controller.checkPara(self.key,val)
+        msg = ""
+        if result == 0:
+            msg = "The inputted value " + val + " will be sent to the Pacemaker. Proceed?"
+        elif result == 1:
+            val = str(self.controller.max(self.key))
+            msg = "Inputted value above upper bound. The upper bound " + val + " will be sent to the Pacemaker. Proceed?"
+        elif result == 2:
+            val = str(self.controller.min(self.key))
+            msg = "Inputted value below lower bound. The lower bound " + val + " will be sent to the Pacemaker. Proceed?"
         else:
-            return  # **modify this part to show a pop-up window telling user what the upper and lower limits are + get a diff value
+            msg = "Inputted value cannot be accepted. Value will not be updated."
+        self.message.configure(text=msg)
+        self.message.grid(row=self.r+1,column=0,columnspan=4)
+        self.cancel.grid(row=self.r+2,column=2,columnspan=2)
+        if result == 3:
+            return
+        else:
+            self.value.set(val)
+            self.send.grid(row=self.r+2,column=0,columnspan=2)
+
+    #this function updates info in database AND sends the value to the pacemaker
+    def sendF(self):
+        self.message.grid_remove()
+        self.cancel.grid_remove()
+        self.controller.changePara(self.key,self.value)
+        #add a function here that sends the parameter to the Pacemaker using serial communication!!!
+        self.send.grid_remove()
+    
+    #this function cancels the data transmission
+    def cancelF(self):
+        self.message.grid_remove()
+        self.cancel.grid_remove()
+        try:
+            self.send.grid_remove()
+        except:
+            return
 
 
 class ParamsPage(tk.Frame):
