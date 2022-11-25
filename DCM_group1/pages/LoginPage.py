@@ -42,5 +42,4 @@ class LoginPage(tk.Frame):
             
             # flag is -1, error means incorrect password
             self.errorLabel = ttk.Label(self, text="Incorrect Password",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
-
         

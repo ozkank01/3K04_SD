@@ -44,9 +44,6 @@ class DcmController:
         #possible pages
         self.possPages =  {"WelcomePage":WelcomePage,"LoginPage":LoginPage,"RegisterPage":RegisterPage,"HomePage":HomePage,"ReportsPage":ReportsPage,"ParamsPage":ParamsPage}
 
-        #self.status = tk.Canvas(self.root, width=500, height=20, background='gray75')
-        #self.status.create_oval(5,5,10,10,fill='red',outline='red')
-
         #Updates current page
         self.currPage = tk.Frame()
         self.moveToPage("WelcomePage")
@@ -93,8 +90,8 @@ class DcmController:
         if self.currUser:
             print(5)
             #progressbar displays current connection status
-            connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=300)
-            connect.grid(column=0,row=0,columnspan=5,padx=20,pady=5)
+            connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=200)
+            connect.grid(column=0,row=0,columnspan=5,padx=10,pady=5)
             connect.start()  #initialized as disconnected
 
 
@@ -156,7 +153,17 @@ class DcmController:
             #second entry of password doesn't match
             return -1
         
-       
+        elif(len(username) < 4 or len(username) > 25):
+            #will not allow usernames to be shorter than 4 characters or longer than 25 characters
+            return 2
+        
+        elif (len(password) < 6 or len(password) > 25):
+            #will not allow passwords to be shorter than 6 characters or longer than 25 characters
+            return 3
+
+        elif username.isalnum() == False or password.isalnum() == False:
+            #will not allow usernames/passwords to contain non-alphanumeric characters
+            return 4
         
         #registers accepted input
         self.dataManager.addUser(username=username, password=password)

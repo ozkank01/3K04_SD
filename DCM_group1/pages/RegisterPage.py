@@ -43,15 +43,24 @@ class RegisterPage(tk.Frame):
         
         #Displays error label based on flag
         if flag == 0:
-
              # flag is 0, error means user exists.
             self.errorLabel = ttk.Label(self, text="User Exists",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
         
-        
         elif flag ==-1:
-
             # flag is -1, error means second entry of password doesn't match
             self.errorLabel = ttk.Label(self, text="Passwords entries do not match",foreground="#cf0e25").grid(row=7,column=1,padx=0,pady=10,columnspan=2, sticky="NESW")
+
+        elif flag ==2:
+            # flag is 2, error means username is too short or too long
+            self.errorLabel = ttk.Label(self, text="Username must be 4-25 characters in length",foreground="#cf0e25").grid(row=7,column=0,padx=5,pady=10,columnspan=2, sticky="NESW")
+
+        elif flag ==3:
+            # flag is 3, error means password is too short or too long
+            self.errorLabel = ttk.Label(self, text="Password must be 6-25 characters in length",foreground="#cf0e25").grid(row=7,column=0,padx=5,pady=10,columnspan=2, sticky="NESW")
+
+        elif flag ==4:
+            # flag is 4, error means username and/or password contain non-alphanumeric characters
+            self.errorLabel = ttk.Label(self, text="Username and password must only contain alphanumeric characters",foreground="#cf0e25").grid(row=7,column=0,padx=5,pady=10,columnspan=2, sticky="NESW")
         
        
 
