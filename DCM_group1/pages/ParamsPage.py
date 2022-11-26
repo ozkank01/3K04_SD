@@ -60,10 +60,50 @@ class ParamUtil(tk.Frame):
 
     #this function updates info in database AND sends the value to the pacemaker
     def sendF(self):
+        self.controller.changePara(self.key,self.value)
+        flag = self.controller.echo()
+        temp_str = ''
+
+        # SETTING ERROR MESSAGES
+        if (flag == 1):
+            # pacemode inconsistent
+            temp_str = "pace mode"
+        elif (flag == 2):
+            # lower rate limit inconsistent
+            temp_str = "lower rate limit"
+        elif (flag == 3):
+            # vent pulse width inconsistent
+            temp_str = "ventricular pulse width"
+        elif (flag == 4):
+            # vent amplitude inconsistent
+            temp_str = "ventricular pulse amplitude"
+        elif (flag == 5):
+            # vent sensitivity inconsistent
+            temp_str = "ventricular sensitivity"
+        elif (flag == 6):
+            # vrp inconsistent
+            temp_str = "ventricular refractory period"
+        elif (flag == 7):
+            # atrial pulse width inconsistent
+            temp_str = "atrial pulse width"
+        elif (flag == 8):
+            # atrial sensitivity inconsistent
+            temp_str = "atrial sensitivity"
+        elif (flag == 9):
+            # arp inconsistent
+            temp_str = "atrial refractory period"
+        
+        # PROCEDURE IF SERIAL COMM CAUSED AN ERROR
+        if (flag > 0):
+            # mostly for TESTING purposes!!! We will not display all of this to the user.
+            msg = "Critical error. The " + temp_str + " is not consistent between the DCM and Pacemaker. Please try again."
+            self.message.grid_remove()
+            self.message.configure(text=msg)
+            self.message.grid(row=self.r+1,column=0,columnspan=4,padx=5,pady=5)
+            return
+        # At this point, serial comm. was a SUCCESS!
         self.message.grid_remove()
         self.cancel.grid_remove()
-        self.controller.changePara(self.key,self.value)
-        #add a function here that sends the parameter to the Pacemaker using serial communication!!!
         self.send.grid_remove()
     
     #this function cancels the data transmission
@@ -124,10 +164,10 @@ class ParamsPage(tk.Frame):
         self.u_r_l = self.createParam(label1="Upper Rate Limit:",r1=4,key1='uppRLimit')
         self.at_amp = self.createParam(label1="Atrial Amplitude:",r1=5,key1='atrAmp')
         self.at_p_w = self.createParam(label1="Atrial Pulse Width:",r1=6,key1='aPulseW')
-        self.arp = self.createParam(label1="ARP:",r1=7,key1='aRP')
+        self.arp = self.createParam(label1="Atrial Refractory Period:",r1=7,key1='aRP')
         self.vt_amp = self.createParam(label1="Ventricular Amplitude:",r1=5,key1='ventAmp')
         self.vt_p_w = self.createParam(label1="Ventricular Pulse Width:",r1=6,key1='ventPulseW')
-        self.vrp = self.createParam(label1="VRP:",r1=7,key1='vRP')
+        self.vrp = self.createParam(label1="Ventricular Refractory Period:",r1=7,key1='vRP')
 
         self.grid()
 

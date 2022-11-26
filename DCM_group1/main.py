@@ -241,6 +241,7 @@ class DcmController:
 
     # this function will verify information relay is occurring properly
     def echo(self):
+        self.connected()
         self.sendToPacemaker()
         data = self.receive()
         err = 0
@@ -250,10 +251,13 @@ class DcmController:
             if (key == 'paceMode'):
                 if (self.paceInterface.decodeParam(data,key) != self.paceModes[self.currUser[key]]):
                     # value of paceModes dictionary (ie 1, 2, 3, 4) is not consistent between database + pacemaker
+                    self.disconnected()
                     return err
             elif (self.paceInterface.decodeParam(data,key) != self.currUser[key]):
                 # values stored on pacemaker and in database are not consistent
+                self.disconnected()
                 return err
+        self.disconnected()
         return 0    # if all values are consistent, we can return 0 (passed test!)
 
 
