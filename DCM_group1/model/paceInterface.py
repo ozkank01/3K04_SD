@@ -6,7 +6,7 @@ import struct
 #tried to find their names for an hour and it's not working. So make sure to
 #put the port name on the line indicated below.
 
-class paceInterface:
+class PaceInterface():
     
     def __init__(self):
         self.ser = serial.Serial()
@@ -70,4 +70,4 @@ class paceInterface:
         else:
             return 0
     
-a = paceInterface()
+a = PaceInterface()

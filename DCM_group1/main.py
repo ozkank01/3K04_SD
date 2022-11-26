@@ -8,6 +8,7 @@ from numpy import true_divide
 
 from model.DataManager import DataManager
 from model.UserClass import User
+from model.paceInterface import PaceInterface
 
 from pages.LoginPage import LoginPage
 from pages.WelcomePage import WelcomePage
@@ -21,10 +22,13 @@ class DcmController:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("DCM")
+        self.paceModes = {'AOO': 1,'AAI': 2,'VOO': 3,'VVI': 4}
+        self.keys = ['paceMode', 'lowRlimit', 'ventPulseW', 'ventAmp', 'ventSens', 'vRP', 'aPulseW', 'atrAmp', 'atSens', 'aRP']
 
 
         self.currUser = None
         self.dataManager = DataManager()
+        self.paceInterface = PaceInterface()
         
 
         #container for pages
@@ -205,8 +209,6 @@ class DcmController:
             self.connectLabel.configure(text='Connecting to Pacemaker...')
             self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
 
-    #note: we still have to work out the internal logic to determine whether the pacemaker is connected or not!
-
     # used to check if a parameter is valid
     def checkPara(self,key,value):
         return self.dataManager.checkValue(key,value)
@@ -216,6 +218,45 @@ class DcmController:
 
     def max(self,key):
         return self.dataManager.getMax(key)
+
+    # this function will be used as a utility to send parameters
+    def sendToPacemaker(self):
+        # get data ready to send to pacemaker
+        mode = self.paceModes[self.currUser['paceMode']]
+        lrl = self.currUser['lowRlimit']
+        vPW = self.currUser['ventPulseW']
+        vAmp = self.currUser['ventAmp']
+        vSens = self.currUser['ventSens']
+        vRP = self.currUser['vRP']
+        aPW = self.currUser['aPulseW']
+        aAmp = self.currUser['atrAmp']
+        aSens = self.currUser['atSens']
+        aRP = self.currUser['aRP']
+        # send data to pacemaker interface to handle serial comm
+        self.paceInterface.sendParams(mode,lrl,vPW,vAmp,vSens,vRP,aPW,aAmp,aSens,aRP)
+
+    # this function will be used as a utility to receive parameters
+    def receive(self):
+        return self.paceInterface.receiveParams()
+
+    # this function will verify information relay is occurring properly
+    def echo(self):
+        self.sendToPacemaker()
+        data = self.receive()
+        err = 0
+        for key in self.keys:
+            err += 1
+            # SPECIAL CASE FOR MODES
+            if (key == 'paceMode'):
+                if (self.paceInterface.decodeParam(data,key) != self.paceModes[self.currUser[key]]):
+                    # value of paceModes dictionary (ie 1, 2, 3, 4) is not consistent between database + pacemaker
+                    return err
+            elif (self.paceInterface.decodeParam(data,key) != self.currUser[key]):
+                # values stored on pacemaker and in database are not consistent
+                return err
+        return 0    # if all values are consistent, we can return 0 (passed test!)
+
+
 
 
 
