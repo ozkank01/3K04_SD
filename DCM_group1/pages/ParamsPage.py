@@ -62,9 +62,9 @@ class ParamUtil(tk.Frame):
     def sendF(self):
         v = 0
         if self.key == 'lowRlimit' or self.key == 'ventPulseW' or self.key == 'aPulseW':
-            v = int(self.value)     #these parameters only take the datatype INT
+            v = int(self.value.get())     #these parameters only take the datatype INT
         else:
-            v = float(self.value)
+            v = float(self.value.get())
         self.controller.changePara(self.key,v)
         flag = self.controller.echo()
         temp_str = ''
@@ -135,7 +135,11 @@ class ParamsPage(tk.Frame):
         
         # initialize drop-down menu to AOO. will change this later!
         self.mode = tk.StringVar(self)
-        self.initial = self.controller.getPara('paceMode')
+        self.initial = ''
+        try:
+            self.initial = self.controller.getPara('paceMode')
+        except:
+            self.initial = 'AOO'
         self.mode.set(self.initial)
         self.vals = self.controller.getValues('paceMode')
         
