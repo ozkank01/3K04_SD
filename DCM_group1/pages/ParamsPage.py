@@ -60,7 +60,12 @@ class ParamUtil(tk.Frame):
 
     #this function updates info in database AND sends the value to the pacemaker
     def sendF(self):
-        self.controller.changePara(self.key,self.value)
+        v = 0
+        if self.key == 'lowRlimit' or self.key == 'ventPulseW' or self.key == 'aPulseW':
+            v = int(self.value)     #these parameters only take the datatype INT
+        else:
+            v = float(self.value)
+        self.controller.changePara(self.key,v)
         flag = self.controller.echo()
         temp_str = ''
 
