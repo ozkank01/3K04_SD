@@ -41,6 +41,8 @@ class DcmController:
 
         #bottom bar frame
         self.bttmBar =tk.Frame(self.root)
+        self.connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=200)
+        self.connectLabel = ttk.Label(self.bttmBar,text='Connecting to Pacemaker...',)
 
         #pages active
         self.activePages = {}
@@ -63,6 +65,22 @@ class DcmController:
     def createPage(self,pageName):
         pageRef = self.possPages[pageName](parent=self.container, controller=self)
         return pageRef
+
+    #will be called once pacemaker is considered connected
+    def connected(self):
+        if (self.currUser != None):
+            self.connect.stop()
+            self.connectLabel.grid_remove()
+            self.connectLabel.configure(text='Connected to Pacemaker!')
+            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
+
+    #will be called once pacemaker is considered disconnected 
+    def disconnected(self):
+        if (self.currUser != None):
+            self.connect.start()
+            self.connectLabel.grid_remove()
+            self.connectLabel.configure(text='Connecting to Pacemaker...')
+            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
 
     #moves to given page
     def moveToPage(self,pageName):
@@ -94,14 +112,7 @@ class DcmController:
         if self.currUser:
             print(5)
             #progressbar displays current connection status
-            connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=200)
-            connect.grid(column=0,row=0,columnspan=5,padx=10,pady=5)
-            connect.start()  #initialized as disconnected
-
-
-            #label displays current connection status in words
-            connectLabel = ttk.Label(self.bttmBar,text='Connecting to Pacemaker...',)
-            connectLabel.grid(column=0,row=1,columnspan=5,padx=20,pady=10)
+            self.disconnected()
 
             #Log out button
             logoutBtt = ttk.Button(
@@ -192,22 +203,6 @@ class DcmController:
     #gets list of values for spinbox (ParamsPage)
     def getValues(self,key):
         return self.dataManager.getPossValues(key)
-
-    #will be called once pacemaker is considered connected
-    def connected(self):
-        if (self.currUser != None):
-            self.connect.stop()
-            self.connectLabel.grid_remove()
-            self.connectLabel.configure(text='Connected to Pacemaker!')
-            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
-
-    #will be called once pacemaker is considered disconnected 
-    def disconnected(self):
-        if (self.currUser != None):
-            self.connect.start()
-            self.connectLabel.grid_remove()
-            self.connectLabel.configure(text='Connecting to Pacemaker...')
-            self.connectLabel.grid(column=0,row=21,columnspan=5,padx=20,pady=10)
 
     # used to check if a parameter is valid
     def checkPara(self,key,value):
