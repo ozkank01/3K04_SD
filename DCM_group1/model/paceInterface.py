@@ -11,7 +11,7 @@ class PaceInterface():
     def __init__(self):
         self.ser = serial.Serial()
         self.ser.baudrate = 115200   #this is taken from tutorial, not sure if ours is the same?
-        #self.ser.port = <REPLACE THIS WITH SERIAL PORT NAME!>
+        self.ser.port = 'COM3'
         self.start = b'\x16'    #INITIALIZE serial comm.
         self.sync = b'\x22'     #RECEIVE info from pacemaker
         self.set = b'\x55'      #SEND info to pacemaker
