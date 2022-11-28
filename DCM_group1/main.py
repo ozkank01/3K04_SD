@@ -16,6 +16,7 @@ from pages.RegisterPage import RegisterPage
 from pages.HomePage import HomePage
 from pages.ReportsPage import ReportsPage
 from pages.ParamsPage import ParamsPage
+from pages.NavBar import NavBar
 
 
 class DcmController:
@@ -25,7 +26,7 @@ class DcmController:
         self.paceModes = {'AOO': 1,'AAI': 2,'VOO': 3,'VVI': 4}
         self.keys = ['paceMode', 'lowRlimit', 'ventPulseW', 'ventAmp', 'ventSens', 'vRP', 'aPulseW', 'atrAmp', 'atSens', 'aRP']
 
-
+        self.navBar =None
         self.currUser = None
         self.dataManager = DataManager()
         self.paceInterface = PaceInterface()
@@ -33,14 +34,14 @@ class DcmController:
 
         #container for pages
         self.container = tk.Frame(self.root)
-        self.container.grid()
+        self.container.grid(column=2)
         #theme
         style = ttk.Style()
         self.root.tk.call("source", "theme/forest-light.tcl")
         style.theme_use("forest-light")
 
         #bottom bar frame
-        self.bttmBar =tk.Frame(self.root)
+        self.bttmBar =ttk.LabelFrame(self.root)
         self.connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=200)
         self.connectLabel = ttk.Label(self.bttmBar,text='Connecting to Pacemaker...',)
 
@@ -60,7 +61,9 @@ class DcmController:
     # Starts 
     def dcmRun(self):
         self.root.mainloop()
-
+    # Reurns name of current page
+    def getCurrPage(self):
+        return self.currPage.__class__.__name__
     #creates an instance of a given page name
     def createPage(self,pageName):
         pageRef = self.possPages[pageName](parent=self.container, controller=self)
@@ -114,16 +117,9 @@ class DcmController:
             #progressbar displays current connection status
             self.disconnected()
 
-            #Log out button
-            logoutBtt = ttk.Button(
-            self.bttmBar,
-            text="Logout",
-            style='Accent.TButton',
-            command= self.logout
-            )
-            logoutBtt.grid(column=5,row=1,rowspan= 2,sticky='NW')
+       
 
-            self.bttmBar.grid()
+
     
 
     #-------------Bottom Bar Logic---------------
@@ -131,6 +127,9 @@ class DcmController:
         self.currUser =None
         self.moveToPage("WelcomePage")
         self.bttmBar.grid_remove()
+        self.navBar.destroy()
+        self.navBar  =None
+
 
     #-------------login page logic---------------
 
@@ -143,7 +142,12 @@ class DcmController:
                 return -1 
             
             self.currUser = self.dataManager.getUserDict(username)
-            self.moveToPage("HomePage")
+            self.bttmBar.grid(column=2, padx =10, pady=10)
+
+            self.navBar =NavBar(self.root,self)
+            self.navSeparator = ttk.Separator(self.root, orient= "vertical")
+            self.navSeparator.grid(row =0,column = 1,rowspan ='2',padx=(0, 20), sticky="NS")
+            self.moveToPage("ParamsPage")
             return 1
         
     
@@ -182,7 +186,7 @@ class DcmController:
         
         #registers accepted input
         self.dataManager.addUser(username=username, password=password)
-        self.moveToPage("HomePage")
+        self.moveToPage("ParamsPage")
         self.currUser = self.dataManager.getUserDict(username)
         return 1
         
