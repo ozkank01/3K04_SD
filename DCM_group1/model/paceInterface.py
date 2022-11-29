@@ -25,16 +25,18 @@ class PaceInterface():
 
         # Pack all values into proper format
         # B = unsigned int, f = float
+        vRP_t = (vRP - 150)/10
+        aRP_t = (aRP - 150)/10
         mode_s = struct.pack('B', mode)
         lrl_s = struct.pack('B', lrl)
         vPW_s = struct.pack('B', vPW)
         vAmp_s = struct.pack('f', vAmp)
         vSens_s = struct.pack('f', vSens)
-        vRP_s = struct.pack('B', vRP)
+        vRP_s = struct.pack('B', vRP_t)
         aPW_s = struct.pack('B', aPW)
         aAmp_s = struct.pack('f', aAmp)
         aSens_s = struct.pack('f', aSens)
-        aRP_s = struct.pack('B', aRP)
+        aRP_s = struct.pack('B', aRP_t)
         # Pack all 26 bytes together and send serially to the Pacemaker
         sig_set = self.start + self.set + mode_s + lrl_s + vPW_s + vAmp_s + vSens_s + vRP_s + aPW_s + aAmp_s + aSens_s + aRP_s
         self.ser.open()
@@ -60,7 +62,7 @@ class PaceInterface():
         elif (key == 'ventSens'):
             return struct.unpack('f', data[7:11])[0]
         elif (key == 'vRP'):
-            return data[11]
+            return 150 + 10*data[11]
         elif (key == 'aPulseW'):
             return data[12]
         elif (key == 'atrAmp'):
@@ -68,7 +70,7 @@ class PaceInterface():
         elif (key == 'atSens'):
             return struct.unpack('f', data[17:21])[0]
         elif (key == 'aRP'):
-            return data[21]
+            return 150 + 10*data[21]
         else:
             return 0
     
