@@ -208,7 +208,12 @@ class DcmController:
     
     #gets data from user
     def getPara(self, key):
-        return self.currUser[key]
+        v = 'AOO'
+        try:
+            v = self.currUser[key]
+        except:
+            v = 'AOO'
+        return v
     
     #changes data for user
     def changePara(self,key, value):

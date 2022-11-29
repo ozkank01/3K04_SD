@@ -25,8 +25,8 @@ class PaceInterface():
 
         # Pack all values into proper format
         # B = unsigned int, f = float
-        vRP_t = (vRP - 150)/10
-        aRP_t = (aRP - 150)/10
+        vRP_t = int((vRP - 150)/10)
+        aRP_t = int((aRP - 150)/10)
         mode_s = struct.pack('B', mode)
         lrl_s = struct.pack('B', lrl)
         vPW_s = struct.pack('B', vPW)
