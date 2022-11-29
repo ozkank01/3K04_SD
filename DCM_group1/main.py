@@ -45,6 +45,16 @@ class DcmController:
         self.bttmBar =ttk.LabelFrame(self.root)
         self.connect = ttk.Progressbar(self.bttmBar,orient='horizontal',mode='indeterminate',length=200)
         self.connectLabel = ttk.Label(self.bttmBar,text='Connecting to Pacemaker...',)
+        self.port = tk.StringVar(self.bttmBar)
+        self.port.set('COM3')
+        self.ports = ['COM3']
+        self.selectPort = ttk.OptionMenu(
+            self.bttmBar,
+            self.port,
+            'COM3',
+            *self.ports
+        )
+        self.butPort = ttk.Button(self.bttmBar,text="Submit",command=self.changePort)
 
         #pages active
         self.activePages = {}
@@ -269,6 +279,10 @@ class DcmController:
     def ecgRead(self):
         data = self.ecgHandler.ecgRead()
         return data
+
+    def changePort(self):
+        self.paceInterface.changePort()
+        self.ecgHandler.changePort()
 
 
 

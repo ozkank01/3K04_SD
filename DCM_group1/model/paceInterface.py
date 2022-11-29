@@ -73,5 +73,16 @@ class PaceInterface():
             return 150 + 10*data[21]
         else:
             return 0
+
+    def changePort(self,port):
+        v = 0
+        try:
+            if self.ser.is_open():
+                self.ser.close()
+                v = 1
+            self.ser.port = port
+            if v == 1:
+                self.ser.open()
+        except:
+            print("Port could not be changed.")
     
-a = PaceInterface()

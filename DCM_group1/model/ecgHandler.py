@@ -19,7 +19,7 @@ class ECGHandler():
         self.ser.write(sig_set)
 
     def ecgStop(self):
-        e = struct.pack('B',0)      #not transmitting anything except for "start streaming" signal
+        e = struct.pack('B',0)      #not transmitting anything except for "stop streaming" signal
         sig_set = self.sync + self.stop + e + e + e + e + e + e + e + e + e + e + e + e + e + e #final e is checksum; sum is 0
         self.ser.write(sig_set)
         self.ser.close()
@@ -34,3 +34,15 @@ class ECGHandler():
             return struct.unpack('H', data[0:2])[0] #will return the m_vraw reading
         else:
             return struct.unpack('H', data[2:4])[0] #will return the f_marker reading3
+
+    def changePort(self,port):
+        v = 0
+        try:
+            if self.ser.is_open():
+                self.ser.close()
+                v = 1
+            self.ser.port = port
+            if v == 1:
+                self.ser.open()
+        except:
+            print("Port could not be changed.")
