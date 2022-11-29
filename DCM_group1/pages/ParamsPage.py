@@ -160,6 +160,8 @@ class ParamsPage(tk.Frame):
             )
         submitButton.grid(row=1,column=2,columnspan=2,padx=10,pady=10)
 
+        self.err = ttk.Label(self,text="",foreground='#cf0e25')
+
         # button to return home
         toHome = ttk.Button(
             self, 
@@ -183,6 +185,50 @@ class ParamsPage(tk.Frame):
     # selects what to display based on pacing mode chosen
     def selectMode(self):
         selected = self.mode.get()
+        self.controller.changePara('paceMode',selected)
+        flag = self.controller.echo()
+        temp_str = ''
+
+        # SETTING ERROR MESSAGES
+        if (flag == 1):
+            # pacemode inconsistent
+            temp_str = "pace mode"
+        elif (flag == 2):
+            # lower rate limit inconsistent
+            temp_str = "lower rate limit"
+        elif (flag == 3):
+            # vent pulse width inconsistent
+            temp_str = "ventricular pulse width"
+        elif (flag == 4):
+            # vent amplitude inconsistent
+            temp_str = "ventricular pulse amplitude"
+        elif (flag == 5):
+            # vent sensitivity inconsistent
+            temp_str = "ventricular sensitivity"
+        elif (flag == 6):
+            # vrp inconsistent
+            temp_str = "ventricular refractory period"
+        elif (flag == 7):
+            # atrial pulse width inconsistent
+            temp_str = "atrial pulse width"
+        elif (flag == 8):
+            # atrial sensitivity inconsistent
+            temp_str = "atrial sensitivity"
+        elif (flag == 9):
+            # arp inconsistent
+            temp_str = "atrial refractory period"
+        try:
+            self.err.grid_remove()
+        except:
+            pass
+
+        # PROCEDURE IF SERIAL COMM CAUSED AN ERROR
+        if (flag > 0):
+            # mostly for TESTING purposes!!! We will not display all of this to the user.
+            msg = "Critical error. The " + temp_str + " is not consistent between the DCM and Pacemaker. Please try again."
+            self.err.configure(text=msg)
+            self.err.grid(row=100,)
+            return
         # will display lower + upper rate limits NO MATTER what mode is selected
         self.l_r_l.grid()
         self.u_r_l.grid()
