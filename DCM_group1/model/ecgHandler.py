@@ -15,12 +15,14 @@ class ECGHandler():
         # This packet is n + 3 bytes large (n = 13, so 16 bytes)
         e = struct.pack('B',0)      #not transmitting anything except for "start streaming" signal
         sig_set = self.sync + self.req + e + e + e + e + e + e + e + e + e + e + e + e + e + e #final e is checksum; sum is 0
+        self.ser.open()
         self.ser.write(sig_set)
 
     def ecgStop(self):
         e = struct.pack('B',0)      #not transmitting anything except for "start streaming" signal
         sig_set = self.sync + self.stop + e + e + e + e + e + e + e + e + e + e + e + e + e + e #final e is checksum; sum is 0
         self.ser.write(sig_set)
+        self.ser.close()
 
     def ecgRead(self):
         #ecg streams 4 BYTES AT A TIME
