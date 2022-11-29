@@ -226,11 +226,11 @@ class DcmController:
         vPW = int(self.currUser['ventPulseW'])
         vAmp = float(self.currUser['ventAmp'])
         vSens = float(self.currUser['ventSens'])
-        vRP = float(self.currUser['vRP'])
+        vRP = int(self.currUser['vRP'])
         aPW = int(self.currUser['aPulseW'])
         aAmp = float(self.currUser['atrAmp'])
         aSens = float(self.currUser['atSens'])
-        aRP = float(self.currUser['aRP'])
+        aRP = int(self.currUser['aRP'])
         # send data to pacemaker interface to handle serial comm
         self.paceInterface.sendParams(mode,lrl,vPW,vAmp,vSens,vRP,aPW,aAmp,aSens,aRP)
 
