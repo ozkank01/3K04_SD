@@ -4,71 +4,8 @@ import sqlite3
 
 import sqlite3 as sql
 
-'''
-PARAMETERS AND THEIR KEY NAMES
-lowRlimit                   Lower Rate Limit
-uppRLimit                   Upper Rate Limit
-maxSensorRate               Maximum Sensor Rate
-fixedAVDelay                Fixed AV Delay
-dynAVDelay                  Dynamic AV Delay
-sensedAVDelayOffset         Sensed AV Delay Offset
-atrAmp                      Atrial Amplitude
-aPulseW                     Atrial Pulse Width
-ventAmp                     Ventricular Amplitude
-ventPulseW                  Ventricular Pulse Width
-atSens                      Atrial Sensitivity
-ventSens                    Ventricular Sensitivity
-vRP                         VRP
-aRP                         ARP
-pvaRP                       PVARP
-pvaRPExtension              PVARP Extension
-hysterisis                  Hysterisis0
-rateSmoothing               Rate Smoothing
-atrDur                      ATR Duration
-atrFallMode                 ATR Fallback Mode
-atrFallTime                 ATR Fallback Time
-actThresh                   Activity Threshold
-reactTime                   Reaction Time
-respFactor                  Response Factor
-recTime                     Recovery Time
-'''
-'''
-self.values = {
-    'lowRlimit':[], 'uppRLimit':[], 'maxSensorRate':[], 'fixedAVDelay':[],'dynAVDelay':['OFF','ON'], #DONT APPEND
-    'sensedAVDelayOffset':['OFF',-10,-20,-30,-40,-50,-60,-70,-80,-90,-100], #DONT APPEND
-    'atrAmp':['OFF'], 'aPulseW':[], 'ventAmp':['OFF'], 'ventPulseW':[],
-    'atSens':[],'ventSens':[],'vRP':[],'aRP':[],'pvaRP':[],'pvaRPExtension':['OFF'],
-    'hysterisis':['OFF'],'rateSmoothing':['OFF','3','6','9','12','15','18','21','25'], #DONT APPEND
-    'atrDur':['10','20','40','60','80'], 'atrFallMode':['OFF','ON'], #DONT APPEND
-    'atrFallTime':[], 'actThresh':['Very Low','Low','Low-Medium','Medium','Medium-High','High','Very High'], #DONT APPEND
-    'reactTime':[], 'respFactor':[], 'recTime':[],
-    'paceMode':['OFF','DDD','VDD','DDI','DOO','AOO','AAI','VOO','VVI','AAT','VVT','DDDR','VDDR','DDIR','DOOR','AOOR','AAIR','VOOR','VVIR']
-}'''
-'''
-self.increments = {
-    'uppRLimit':(50,5,175),
-    'maxSensorRate':(50,5,175),
-    'fixedAVDelay':(70,10,300),
-    'atrAmp':(0.1,0.1,5),
-    'aPulseW':(1,1,30),
-    'ventAmp':(0.1,0.1,5),
-    'ventPulseW':(1,1,30),
-    'atSens':(0,0.1,5),
-    'ventSens':(0,0.1,5),
-    'vRP':(150,10,500),
-    'aRP':(150,10,500),
-    'pvaRP':(150,10,500),
-    'pvaRPExtension':(50,50,400),
-    'atrDur':(100,100,2000),
-    'atrFallTime':(1,1,5),
-    'reactTime':(10,10,50),
-    'respFactor':(1,1,16),
-    'recTime':(2,1,16)
-}'''
 class DataManager():
     def __init__(self):
-        #self.headers = ('username','password','lowRlimit','uppRLimit','maxSensorRate','fixedAVDelay','dynAVDelay','sensedAVDelayOffset','atrAmp','aPulseW', 'ventAmp','ventPulseW','atSens','ventSens','vRP','aRP','pvaRP','pvaRPExtension','hysterisis','rateSmoothing','atrDur','atrFallMode','atrFallTime','actThresh','reactTime',
-        #'respFactor','recTime','paceMode','pacemakerId')
         self.headers = ('username','password','lowRlimit','uppRLimit','atrAmp','aPulseW','ventAmp','ventPulseW','atSens','ventSens','vRP','aRP','paceMode','pacemakerId')
         self.createTable()
         # -1 means OFF
@@ -158,7 +95,6 @@ class DataManager():
                 return True
             return False
     
-    
     #Returns the password for a user in the table
     def getUserPass(self,username):
         with sql.connect("user.db") as con:
@@ -187,7 +123,6 @@ class DataManager():
             cur = con.cursor()
             cur.execute("SELECT COUNT(username) FROM user_data")
             result, = cur.fetchone()
-            
             return result
 
     #removes the row from the table with the given user name
@@ -228,10 +163,3 @@ class DataManager():
         else:
             #otherwise, DO NOT change value! Will be reset back to what it was before submit
             return 3
-
-    
-
-    
-
-
-
