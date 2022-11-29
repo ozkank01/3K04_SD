@@ -250,7 +250,7 @@ class DcmController:
         return self.paceInterface.receiveParams()
 
     # this function will verify information relay is occurring properly
-    '''def echo(self):
+    def echo(self):
         self.connected()
         self.sendToPacemaker()
         data = self.receive()
@@ -268,19 +268,6 @@ class DcmController:
                 self.disconnected()
                 return err
         self.disconnected()
-        return 0    # if all values are consistent, we can return 0 (passed test!)'''
-
-    def echo(self):
-        self.connected()
-        self.sendToPacemaker()
-        data = self.receive()
-        for key in self.keys:
-            # SPECIAL CASE FOR MODES
-            if (key == 'paceMode'):
-                print(self.paceInterface.decodeParam(data,key) + " // " + self.paceModes[self.currUser[key]])
-            else:
-                # values stored on pacemaker and in database are not consistent
-                print(self.paceInterface.decodeParam(data,key) + " // " + self.currUser[key])
         return 0    # if all values are consistent, we can return 0 (passed test!)
 
     def ecgStart(self):
