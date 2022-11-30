@@ -17,7 +17,6 @@ from pages.HomePage import HomePage
 from pages.ReportsPage import ReportsPage
 from pages.ParamsPage import ParamsPage
 from pages.NavBar import NavBar
-from model.ecgHandler import ECGHandler
 
 
 class DcmController:
@@ -31,7 +30,7 @@ class DcmController:
         self.currUser = None
         self.dataManager = DataManager()
         self.paceInterface = PaceInterface()
-        self.ecgHandler = ECGHandler()
+        
 
         #container for pages
         self.container = tk.Frame(self.root)
@@ -270,15 +269,6 @@ class DcmController:
         self.disconnected()
         return 0    # if all values are consistent, we can return 0 (passed test!)
 
-    def ecgStart(self):
-        self.ecgHandler.ecgStart()
-
-    def ecgStop(self):
-        self.ecgHandler.ecgStop()
-
-    def ecgRead(self):
-        data = self.ecgHandler.ecgRead()
-        return data
 
     def changePort(self):
         self.paceInterface.changePort()
