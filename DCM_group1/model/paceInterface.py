@@ -25,16 +25,21 @@ class PaceInterface():
 
         # Pack all values into proper format
         # B = unsigned int, f = float, H = unsigned short
+        vRP_t = (vRP - 150)/10
+        aRP_t = (aRP - 150)/10
+        
         mode_s = struct.pack('B', mode)
         lrl_s = struct.pack('B', lrl)
         vPW_s = struct.pack('B', vPW)
         vAmp_s = struct.pack('f', vAmp)
         vSens_s = struct.pack('f', vSens)
-        vRP_s = struct.pack('H', vRP)
+        vRP_s = struct.pack('B', vRP_t)
+        vRP_s = struct.pack('B', int(vRP_t))
         aPW_s = struct.pack('B', aPW)
         aAmp_s = struct.pack('f', aAmp)
         aSens_s = struct.pack('f', aSens)
-        aRP_s = struct.pack('H', aRP)
+        aRP_s = struct.pack('B', aRP_t)
+        aRP_s = struct.pack('B', int(aRP_t))
         # Pack all 26 bytes together and send serially to the Pacemaker
         sig_set = self.start + self.set + mode_s + lrl_s + vPW_s + vAmp_s + vSens_s + vRP_s + aPW_s + aAmp_s + aSens_s + aRP_s
         self.ser.write(sig_set)
